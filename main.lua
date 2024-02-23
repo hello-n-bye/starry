@@ -1,3 +1,1 @@
-local export = 'blob/master/src/checker.lua'
-
-loadstring(game:HttpGetAsync('https://github.com/hello-n-bye/starry/' .. export, true))()
+loadstring(game:HttpGetAsync('https://raw.githubusercontent.com/hello-n-bye/starry/master/src/checker.lua' .. export, true))()
