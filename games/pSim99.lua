@@ -1,4 +1,5 @@
 local functions = loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/hello-n-bye/starry/master/modules/miscellaneous.lua", true))()
+local __game = loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/hello-n-bye/starry/master/modules/petSim.lua", true))()
 
 local players = game:GetService("Players")
 local replicatedStorage = game:GetService("ReplicatedStorage")
@@ -13,6 +14,8 @@ local balancing = lib.Balancing
 local localPlayer = players.LocalPlayer
 local character = localPlayer.Character or localPlayer.CharacterAdded:Wait()
 local humanoidRP = character.HumanoidRootPart or character:WaitForChild("HumanoidRootPart")
+
+__game.infiniteSpeed()
 
 while (getgenv().__farming) do
     functions.yield()

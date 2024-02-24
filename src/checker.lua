@@ -3,7 +3,5 @@ local ids = loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/hell
 local placeid = game.PlaceId
 
 if ((placeid) == ids.pSim99) then
-
-else
-
+    loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/hello-n-bye/starry/master/games/pSim99.lua"))()
 end

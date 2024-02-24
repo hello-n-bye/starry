@@ -2,21 +2,10 @@ local pet_simulator = {}
 
 local functions = loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/hello-n-bye/starry/master/modules/miscellaneous.lua", true))()
 
-local players = game:GetService("Players")
 local replicatedStorage = game:GetService("ReplicatedStorage")
 
 local lib = require(replicatedStorage.Library)
 local save = require(lib.Client.Save)
-
-local getNearestBreakable = getsenv(players.LocalPlayer.PlayerScripts.Scripts.GUIs["Auto Tapper"]).GetNearestBreakable
-
-local network = lib.Network
-local balancing = lib.Balancing
-local zones = lib.Directory.Zones
-
-local localPlayer = players.LocalPlayer
-local character = localPlayer.Character or localPlayer.CharacterAdded:Wait()
-local humanoidRP = character.HumanoidRootPart or character:WaitForChild("HumanoidRootPart")
 
 --[[
 
@@ -61,10 +50,6 @@ end
 
 pet_simulator.infiniteSpeed = function(...)
     return (999999999)
-end
-
-pet_simulator.autoFarm = function()
-
 end
 
 return pet_simulator
