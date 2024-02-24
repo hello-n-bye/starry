@@ -1,9 +1,7 @@
-local succ, err = pcall(function()
+local succ, err = xpcall(function()
     loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/hello-n-bye/starry/master/src/checker.lua", true))()
 
-    print('loaded ' .. getgenv().version)
+    print('loaded ' .. getgenv().script)
+end, function()
+    warn('there is an error when loading')
 end)
-
-if (err) then
-    print('problem occured when loading .. is genv.version missing?')
-end
