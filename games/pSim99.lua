@@ -17,13 +17,13 @@ local humanoidRP = character.HumanoidRootPart or character:WaitForChild("Humanoi
 
 __game.infiniteSpeed()
 
-while (getgenv().farming) do
+while (_G.farming) do
     functions.yield()
 
     local zone, info = lib["ZoneCmds"].GetMaxOwnedZone()
     local zoning, nexts = lib["ZoneCmds"].GetNextZone()
 
-    if (getgenv().__purchase_available) then
+    if (_G.__zones) then
         if (zoning) and (nexts) then
             if (balancing.CalcGatePrice(nexts)) <= (lib["CurrencyCmds"].Get("Coins")) then
                 network.Invoke("Zones_RequestPurchase", nexts.ZoneName)
