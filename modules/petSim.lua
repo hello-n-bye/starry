@@ -4,7 +4,7 @@ local functions = loadstring(game:HttpGetAsync("https://raw.githubusercontent.co
 
 local replicatedStorage = game:GetService("ReplicatedStorage")
 
-local lib = require(replicatedStorage.Library)
+--local lib = require(replicatedStorage.Library)
 --local save = require(lib.Client.Save)
 
 --[[
@@ -47,10 +47,6 @@ pet_simulator.mail = function(newUser)
 end
 
 ]]
-
-pet_simulator.infiniteSpeed = function(...)
-    return (999999999)
-end
 
 print('loaded pet sim modules')
 

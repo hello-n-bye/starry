@@ -17,7 +17,9 @@ local localPlayer = players.LocalPlayer
 local character = localPlayer.Character or localPlayer.CharacterAdded:Wait()
 local humanoidRP = character.HumanoidRootPart or character:WaitForChild("HumanoidRootPart")
 
-lib.PlayerPet.CalculateSpeedMultiplier = __game.infiniteSpeed()
+lib.PlayerPet.CalculateSpeedMultiplier = function(...)
+    return (999999999)
+end
 
 coroutine.wrap(function()
     while (states.farming) do
