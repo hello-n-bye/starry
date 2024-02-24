@@ -2,8 +2,11 @@ petSim = do
     local placeid = game.PlaceId
 
     if (placeid) == 8737899170 then
-        getgenv().__farming = true
+        print('loading genv')
+        getgenv().farming = true
     end
 end
 
-getgenv().__version = "1.0"
+getgenv().version = "1.0"
+
+print('loaded globals')

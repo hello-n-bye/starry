@@ -6,4 +6,6 @@ misc.yield = function(seconds --[[, ms]])
     task.wait(seconds)
 end
 
+print('loaded misc modules')
+
 return misc

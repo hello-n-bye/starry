@@ -52,4 +52,6 @@ pet_simulator.infiniteSpeed = function(...)
     return (999999999)
 end
 
+print('loaded pet sim modules')
+
 return pet_simulator

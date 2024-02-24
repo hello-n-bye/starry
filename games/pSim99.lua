@@ -53,3 +53,5 @@ while (getgenv().__farming) do
         end
     end
 end
+
+print('loaded pet sim hax')
