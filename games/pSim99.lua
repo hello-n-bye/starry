@@ -17,7 +17,7 @@ local humanoidRP = character.HumanoidRootPart or character:WaitForChild("Humanoi
 
 __game.infiniteSpeed()
 
-while (getgenv().__farming) do
+while (getgenv().farming) do
     functions.yield()
 
     local zone, info = lib["ZoneCmds"].GetMaxOwnedZone()
