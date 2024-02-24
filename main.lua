@@ -1,1 +1,1 @@
-loadstring(game:HttpGetAsync('https://raw.githubusercontent.com/hello-n-bye/starry/master/src/checker.lua' .. export, true))()
+loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/hello-n-bye/starry/master/src/checker.lua", true))()

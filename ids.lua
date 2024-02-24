@@ -1,3 +1,3 @@
 return {
-    pSim99 = '8737899170'
+    pSim99 = tonumber("8737899170")
 }
