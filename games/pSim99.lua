@@ -1,6 +1,8 @@
 local functions = loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/hello-n-bye/starry/master/modules/miscellaneous.lua", true))()
 local __game = loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/hello-n-bye/starry/master/modules/petSim.lua", true))()
 
+local states = { farming = true, __zones = true }
+
 local players = game:GetService("Players")
 local replicatedStorage = game:GetService("ReplicatedStorage")
 
@@ -17,13 +19,13 @@ local humanoidRP = character.HumanoidRootPart or character:WaitForChild("Humanoi
 
 __game.infiniteSpeed()
 
-while (_G.farming) do
+while (states.farming) do
     functions.yield()
 
     local zone, info = lib["ZoneCmds"].GetMaxOwnedZone()
     local zoning, nexts = lib["ZoneCmds"].GetNextZone()
 
-    if (_G.__zones) then
+    if (states.__zones) then
         if (zoning) and (nexts) then
             if (balancing.CalcGatePrice(nexts)) <= (lib["CurrencyCmds"].Get("Coins")) then
                 network.Invoke("Zones_RequestPurchase", nexts.ZoneName)
