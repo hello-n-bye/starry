@@ -1,10 +1,8 @@
 local flu = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
 local functions = loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/hello-n-bye/starry/master/modules/miscellaneous.lua", true))()
 
-local push = (http and http.request) or http_request or (fluxus and fluxus.request) or request
 local queue = (fluxus and fluxus.queueteleport) or queue_on_teleport
 
-local fattyError = 'Select One is not a valid member of Player "Players"'
 local queueEnabled = true
 
 local players = game.Players
@@ -35,7 +33,7 @@ local tabs = {
         Title = " Main",
         Icon = ""
     }),
-    general = window:AddTab({
+    pets = window:AddTab({
         Title = " Pets",
         Icon = "bone"
     }),
@@ -54,6 +52,14 @@ local tabs = {
     minigames = window:AddTab({
         Title = " Minigames",
         Icon = "gamepad"
+    }),
+    digging = window:AddTab({
+        Title = " Digging",
+        Icon = "shovel"
+    }),
+    fishing = window:AddTab({
+        Title = " Fishing",
+        Icon = "package-search"
     }),
 }
 
@@ -93,190 +99,178 @@ flu:Notify({
 
 -- main tab
 
-tabs.intro:AddParagraph({
-    Title = "Source-code",
-    Content = "Find us @ github.com/hello-n-bye/Starry"
-})
-
-tabs.intro:AddButton({
-    Title = "Join Community",
-    Description = "Be apart my community for my main project.",
-    Callback = function()
-        if (clip) then
-            clip("https://discord.gg/dshMH6Edeu")
-            notify("Modulus", "Copied invite to your clipboard")
-        else
-            notify("Modulus", "discord.gg/dshMH6Edeu")
+do
+    tabs.intro:AddParagraph({
+        Title = "Source-code",
+        Content = "Find us @ github.com/hello-n-bye/Starry"
+    })
+    
+    tabs.intro:AddButton({
+        Title = "Join Community",
+        Description = "Be apart my community for my main project.",
+        Callback = function()
+            if (clip) then
+                clip("https://discord.gg/dshMH6Edeu")
+                notify("Modulus", "Copied invite to your clipboard")
+            else
+                notify("Modulus", "discord.gg/dshMH6Edeu")
+            end
         end
-    end
-})
-
-tabs.intro:AddButton({
-    Title = "Rejoin",
-    Description = "Join the server you are in again.",
-    Callback = function()
-        if (queueEnabled) then
-            queue('loadstring(game:HttpGet("https://raw.githubusercontent.com/hello-n-bye/starry/master/main.lua"))()')
+    })
+    
+    tabs.intro:AddButton({
+        Title = "Rejoin",
+        Description = "Join the server you are in again.",
+        Callback = function()
+            if (queueEnabled) then
+                queue('loadstring(game:HttpGet("https://raw.githubusercontent.com/hello-n-bye/starry/master/main.lua"))()')
+            end
+    
+            game:GetService("TeleportService"):Teleport(game.PlaceId, localPlayer)
         end
+    })
+    
+    local launch = tabs.intro:AddToggle("Auto Launch", {
+        Title = "Launch on Rejoin",
+        Default = true
+    })
+    
+    launch:OnChanged(function(value)
+        queueEnabled = value
+    end)
+end
 
-        game:GetService("TeleportService"):Teleport(game.PlaceId, localPlayer)
-    end
-})
+-- pet tab
 
-local launch = tabs.intro:AddToggle("Auto Launch", {
-    Title = "Launch on Rejoin",
-    Default = true
-})
-
-launch:OnChanged(function(value)
-    queueEnabled = value
-end)
+do
+    
+end
 
 -- player mods
 
-local speed = tabs.player:AddSlider("Walking Speed", {
-    Title = "Walkspeed",
-    Description = "Changes how fast you walk.",
-    Default = presets.walkspeed,
-    Min = 1,
-    Max = 250,
-    Rounding = 1,
-    Callback = function(value)
-        humanoid.WalkSpeed = value
-    end
-})
-
-tabs.player:AddButton({
-    Title = "Clear Speed",
-    Description = "Changes your speed back to normal.",
-    Callback = function()
-        speed:SetValue(presets.walkspeed)
-        humanoid.WalkSpeed = presets.walkspeed
-
-        notify("Walkspeed Changed", "Congrats, you're normal again.")
-    end
-})
-
-local jumppower = tabs.player:AddSlider("Jumping Power", {
-    Title = "Jump-power",
-    Description = "Changes how high you can jump.",
-    Default = presets.jumppower,
-    Min = 1,
-    Max = 781.25,
-    Rounding = 1,
-    Callback = function(value)
-        humanoid.JumpPower = value
-    end
-})
-
-tabs.player:AddButton({
-    Title = "Clear Jump-power",
-    Description = "Changes your jumping power back to normal.",
-    Callback = function()
-        jumppower:SetValue(presets.jumppower)
-        humanoid.JumpPower = presets.jumppower
-        
-        notify("Jump-power Changed", "Congrats, you're normal again.")
-    end
-})
-
-local listed = {}
-local function getPlayersList()
-    for _,v in ipairs(players:GetPlayers()) do
-        if (v.Name) ~= (localPlayer.Name) then
-            table.insert(listed, v.Name)
+do
+    local speed = tabs.player:AddSlider("Walking Speed", {
+        Title = "Walkspeed",
+        Description = "Changes how fast you walk.",
+        Default = presets.walkspeed,
+        Min = 1,
+        Max = 250,
+        Rounding = 1,
+        Callback = function(value)
+            humanoid.WalkSpeed = value
+        end
+    })
+    
+    tabs.player:AddButton({
+        Title = "Clear Speed",
+        Description = "Changes your speed back to normal.",
+        Callback = function()
+            speed:SetValue(presets.walkspeed)
+            humanoid.WalkSpeed = presets.walkspeed
+    
+            notify("Walkspeed Changed", "Congrats, you're normal again.")
+        end
+    })
+    
+    local jumppower = tabs.player:AddSlider("Jumping Power", {
+        Title = "Jump-power",
+        Description = "Changes how high you can jump.",
+        Default = presets.jumppower,
+        Min = 1,
+        Max = 781.25,
+        Rounding = 1,
+        Callback = function(value)
+            humanoid.JumpPower = value
+        end
+    })
+    
+    tabs.player:AddButton({
+        Title = "Clear Jump-power",
+        Description = "Changes your jumping power back to normal.",
+        Callback = function()
+            jumppower:SetValue(presets.jumppower)
+            humanoid.JumpPower = presets.jumppower
+            
+            notify("Jump-power Changed", "Congrats, you're normal again.")
+        end
+    })
+    
+    local listed = {}
+    local function getPlayersList()
+        for _,v in ipairs(players:GetPlayers()) do
+            if (v.Name) ~= (localPlayer.Name) then
+                table.insert(listed, v.Name)
+            end
         end
     end
-end
-
-getPlayersList()
-
-local gotoPlayer = tabs.player:AddDropdown("Player TP", {
-    Title = "Goto Player",
-    Values = listed,
-    Multi = false,
-    Default = "Select One"
-})
-
-local spectate = tabs.player:AddDropdown("Spectate", {
-    Title = "Spectate Player",
-    Values = listed,
-    Multi = false,
-    Default = "Select One"
-})
-
---[[
-
-local core = game:GetService("CoreGui")
-for _,v in ipairs(core:GetDescendants()) do
-	if (v.ClassName) == "TextLabel" then
-		if (v.Text) == "Spectate Player" then
-			local newLabel = v.Parent.Parent.TextButton.TextLabel
-            print(newLabel.Text, newLabel.Parent)
-			newLabel.Text = "Select One"
-		end
-
-        functions.yield(0.15)
-        if (v.Text) == (v.Text) == "Goto Player" then
-			local newLabel = v.Parent.Parent.TextButton.TextLabel
-            print(newLabel.Text, newLabel.Parent)
-			newLabel.Text = "Select One"
-        end
-	end
-end
-
-]]
-
-players.PlayerAdded:Connect(function(player)
-    table.insert(listed, player.Name)
-    gotoPlayer:SetValues(listed)
-    spectate:SetValues(listed)
-end)
-
-players.PlayerRemoving:Connect(function(player)
-    for i, name in ipairs(listed) do
-        if (name) == (player.Name) then
-            table.remove(listed, i)
-            break
-        end
-    end
-    gotoPlayer:SetValues(listed)
-    spectate:SetValues(listed)
-end)
-
-gotoPlayer:OnChanged(function(player)
-    local character = localPlayer.Character or localPlayer.CharacterAdded:Wait()
-    local rootPart = character.HumanoidRootPart or character:WaitForChild("HumanoidRootPart")
-    local succ, err = xpcall(function()
-        local newChar = players[player].Character or players[player].CharacterAdded:Wait()
-        rootPart.CFrame = newChar.HumanoidRootPart.CFrame
-    end, function(error)
-        warn("💫 Starry Debugger: " .. error)
+    
+    getPlayersList()
+    
+    local gotoPlayer = tabs.player:AddDropdown("Player TP", {
+        Title = "Goto Player",
+        Values = listed,
+        Multi = false,
+        Default = "Select One"
+    })
+    
+    local spectate = tabs.player:AddDropdown("Spectate", {
+        Title = "Spectate Player",
+        Values = listed,
+        Multi = false,
+        Default = "Select One"
+    })
+    
+    players.PlayerAdded:Connect(function(player)
+        table.insert(listed, player.Name)
+        gotoPlayer:SetValues(listed)
+        spectate:SetValues(listed)
     end)
-end)
-
-spectate:OnChanged(function(player)
-    local camera = workspace.CurrentCamera
-    local succ, err = xpcall(function()
-        local newChar = players[player].Character or players[player].CharacterAdded:Wait()
-        camera.CameraSubject = newChar
-    end, function(error)
-        warn("💫 Starry Debugger: " .. error)
+    
+    players.PlayerRemoving:Connect(function(player)
+        for i, name in ipairs(listed) do
+            if (name) == (player.Name) then
+                table.remove(listed, i)
+                break
+            end
+        end
+        gotoPlayer:SetValues(listed)
+        spectate:SetValues(listed)
     end)
-end)
-
-local unspectate = tabs.player:AddButton({
-    Title = "Unspectate",
-    Description = "Lock your camera back on yourself.",
-    Callback = function()
-        local camera = workspace.CurrentCamera
-        local newChar = localPlayer.Character or localPlayer.CharacterAdded:Wait()
+    
+    gotoPlayer:OnChanged(function(player)
+        local character = localPlayer.Character or localPlayer.CharacterAdded:Wait()
+        local rootPart = character.HumanoidRootPart or character:WaitForChild("HumanoidRootPart")
         local succ, err = xpcall(function()
+            local newChar = players[player].Character or players[player].CharacterAdded:Wait()
+            rootPart.CFrame = newChar.HumanoidRootPart.CFrame
+        end, function(error)
+            warn("💫 Starry Debugger: " .. error)
+        end)
+    end)
+    
+    spectate:OnChanged(function(player)
+        local camera = workspace.CurrentCamera
+        local succ, err = xpcall(function()
+            local newChar = players[player].Character or players[player].CharacterAdded:Wait()
             camera.CameraSubject = newChar
         end, function(error)
-            notify("Couldn't Stop Spectating", tostring(error))
+            warn("💫 Starry Debugger: " .. error)
         end)
-    end
-})
+    end)
+    
+    local unspectate = tabs.player:AddButton({
+        Title = "Unspectate",
+        Description = "Lock your camera back on yourself.",
+        Callback = function()
+            local camera = workspace.CurrentCamera
+            local newChar = localPlayer.Character or localPlayer.CharacterAdded:Wait()
+            local succ, err = xpcall(function()
+                camera.CameraSubject = newChar
+            end, function(error)
+                notify("Couldn't Stop Spectating", tostring(error))
+            end)
+        end
+    })
+end
 
 window:SelectTab(1)
