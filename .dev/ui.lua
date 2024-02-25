@@ -19,7 +19,7 @@ local window = flu:CreateWindow({
     Title = "Starry 💫",
     SubTitle = "github.com/hello-n-bye/Starry",
     TabWidth = 160,
-    Size = UDim2.fromOffset(580 / 2, 460 / 2),
+    Size = UDim2.fromOffset(625, 460 / 1.25),
     Acrylic = true,
     Theme = "Darker",
     MinimizeKey = Enum.KeyCode.LeftControl
@@ -181,7 +181,10 @@ local gotoPlayer = tabs.player:AddDropdown("Player TP", {
 })
 
 local spectate = tabs.player:AddDropdown("Spectate", {
-    
+    Title = "Spectate Player",
+    Values = listed,
+    Multi = false,
+    Default = "Select One"
 })
 
 players.PlayerAdded:Connect(function(player)
@@ -209,5 +212,29 @@ gotoPlayer:OnChanged(function(player)
         notify("Couldn't Teleport", tostring(error))
     end)
 end)
+
+spectate:OnChanged(function(player)
+    local camera = workspace.CurrentCamera
+    local succ, err = xpcall(function()
+        local newChar = players[player].Character or players[player].CharacterAdded:Wait()
+        camera.CameraSubject = newChar
+    end, function(error)
+        notify("Couldn't Spectate", tostring(error))
+    end)
+end)
+
+local unspectate = tabs.player:AddButton({
+    Title = "Unspectate",
+    Description = "Lock your camera back on yourself.",
+    Callback = function()
+        local camera = workspace.CurrentCamera
+        local newChar = localPlayer.Character or localPlayer.CharacterAdded:Wait()
+        local succ, err = xpcall(function()
+            camera.CameraSubject = newChar
+        end, function(error)
+            notify("Couldn't Stop Spectating", tostring(error))
+        end)
+    end
+})
 
 window:SelectTab(1)
