@@ -4,6 +4,7 @@ local functions = loadstring(game:HttpGetAsync("https://raw.githubusercontent.co
 local push = (http and http.request) or http_request or (fluxus and fluxus.request) or request
 local queue = (fluxus and fluxus.queueteleport) or queue_on_teleport
 
+local fattyError = 'Select One is not a valid member of Player "Players"'
 local queueEnabled = true
 
 local players = game.Players
@@ -251,7 +252,11 @@ gotoPlayer:OnChanged(function(player)
         rootPart.CFrame = newChar.HumanoidRootPart.CFrame
         gotoPlayer:SetValue("Select One")
     end, function(error)
-        notify("Couldn't Teleport", tostring(error))
+        if (error) == fattyError then
+            print("Frick you fatty error!!!")
+        else
+            notify("Couldn't Teleport", tostring(error))
+        end
     end)
 end)
 
@@ -260,8 +265,13 @@ spectate:OnChanged(function(player)
     local succ, err = xpcall(function()
         local newChar = players[player].Character or players[player].CharacterAdded:Wait()
         camera.CameraSubject = newChar
+        spectate:SetValue("Select One")
     end, function(error)
-        notify("Couldn't Spectate", tostring(error))
+        if (error) == fattyError then
+            print("Frick you fatty error!!!")
+        else
+            notify("Couldn't Spectate", tostring(error))
+        end
     end)
 end)
 
