@@ -1,7 +1,24 @@
 local functions = loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/hello-n-bye/starry/master/modules/miscellaneous.lua", true))()
 local __game = loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/hello-n-bye/starry/master/modules/petSim.lua", true))()
 
-local states = { farming = true, __zones = true }
+local states = {
+    farming = false,    -- auto farm
+    zones = false,      -- auto purchase zones
+    hatching = false,   -- auto hatch
+    mailer = false,     -- auto send loot to main via mail
+    scam = false,       -- tricks server to pretend your item is there, when it isn't
+    buffs = false,      -- auto buy the diamond upgrades in zones
+    rank = false,       -- auto claim rank rewards
+    free = false,       -- auto claim free loot areas
+    egg = false,        -- auto buy egg slot
+    equip = false,      -- auto buy pet equip
+    minigames = false   -- auto do minigames for you
+    animation = false   -- show or remove hatch animation
+    speed = false       -- allow your player to move fast
+    noclip = false      -- walk through objects
+    diamond = false     -- auto farm the diamond VIP zone (if available)
+    carot = false       -- give your pets infinite speed
+}
 
 local players = game:GetService("Players")
 local replicatedStorage = game:GetService("ReplicatedStorage")
@@ -28,7 +45,7 @@ coroutine.wrap(function()
         local zone, info = lib["ZoneCmds"].GetMaxOwnedZone()
         local zoning, nexts = lib["ZoneCmds"].GetNextZone()
     
-        if (states.__zones) then
+        if (states.zones) then
             if (zoning) and (nexts) then
                 if (balancing.CalcGatePrice(nexts)) <= (lib["CurrencyCmds"].Get("Coins")) then
                     network.Invoke("Zones_RequestPurchase", nexts.ZoneName)
