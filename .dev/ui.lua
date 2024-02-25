@@ -189,6 +189,7 @@ local function getPlayersList()
 end
 
 getPlayersList()
+table.insert("Select One", listed)
 
 local gotoPlayer = tabs.player:AddDropdown("Player TP", {
     Title = "Goto Player",
@@ -249,6 +250,7 @@ gotoPlayer:OnChanged(function(player)
     local succ, err = xpcall(function()
         local newChar = players[player].Character or players[player].CharacterAdded:Wait()
         rootPart.CFrame = newChar.HumanoidRootPart.CFrame
+        gotoPlayer:SetValue("Select One")
     end, function(error)
         notify("Couldn't Teleport", tostring(error))
     end)
