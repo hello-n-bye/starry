@@ -175,7 +175,8 @@ local gotoPlayer = tabs.player:AddDropdown("Player TP", {
 })
 
 gotoPlayer:OnChanged(function(player)
-    rootPart.CFrame = workspace[player].HumanoidRootPart.CFrame + Vector3.new(10, 5, 0)
+    local newChar = players[player].Character or players[player].CharacterAdded:Wait()
+    rootPart.CFrame = newChar.HumanoidRootPart.CFrame + Vector3.new(10, 5, 0)
 end)
 
 window:SelectTab(1)
