@@ -1,4 +1,5 @@
 local flu = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
+local functions = loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/hello-n-bye/starry/master/modules/miscellaneous.lua", true))()
 
 local push = (http and http.request) or http_request or (fluxus and fluxus.request) or request
 local queue = (fluxus and fluxus.queueteleport) or queue_on_teleport
@@ -179,15 +180,35 @@ local gotoPlayer = tabs.player:AddDropdown("Player TP", {
     Title = "Goto Player",
     Values = listed,
     Multi = false,
-    Default = 0
+    Default = "Select One"
 })
 
 local spectate = tabs.player:AddDropdown("Spectate", {
     Title = "Spectate Player",
     Values = listed,
     Multi = false,
-    Default = 0
+    Default = "Select One"
 })
+
+functions.yield(0.25)
+
+local core = game:GetService("CoreGui")
+for _,v in ipairs(core:GetDescendants()) do
+	if (v.ClassName) == "TextLabel" then
+		if (v.Text) == "Spectate Player" then
+			local newLabel = v.Parent.Parent.TextButton.TextLabel
+            print(newLabel.Text, newLabel.Parent)
+			newLabel.Text = "Select One"
+		end
+
+        functions.yield(0.15)
+        if (v.Text) == (v.Text) == "Goto Player" then
+			local newLabel = v.Parent.Parent.TextButton.TextLabel
+            print(newLabel.Text, newLabel.Parent)
+			newLabel.Text = "Select One"
+        end
+	end
+end
 
 players.PlayerAdded:Connect(function(player)
     table.insert(listed, player.Name)
@@ -240,21 +261,5 @@ local unspectate = tabs.player:AddButton({
         end)
     end
 })
-
-local core = game:GetService("CoreGui")
-for _,v in ipairs(core:GetDescendants()) do
-	if (v.ClassName) == "TextLabel" then
-		if (v.Text) == "Spectate Player" then
-			local newLabel = v.Parent.Parent.TextButton.TextLabel
-			newLabel.Text = "Select One"
-		end
-
-        task.wait(0.15)
-        if (v.Text) == (v.Text) == "Goto Player" then
-			local newLabel = v.Parent.Parent.TextButton.TextLabel
-			newLabel.Text = "Select One"
-        end
-	end
-end
 
 window:SelectTab(1)
