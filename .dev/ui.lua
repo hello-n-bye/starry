@@ -250,7 +250,11 @@ fly:OnChanged(function(value)
     local signal1
     local signal2
 
+    local firedOriginally = false
+
     if (value) then
+        firedOriginally = true
+
         local controlModule = require(localPlayer.PlayerScripts:WaitForChild("PlayerModule"):WaitForChild("ControlModule"))
         local bodyVelocity = Instance.new("BodyVelocity")
         bodyVelocity.Name = "VelocityHandler"
@@ -313,12 +317,16 @@ fly:OnChanged(function(value)
             end
         end)
     else
-        game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler:Destroy()
-        game.Players.LocalPlayer.Character.HumanoidRootPart.GyroHandler:Destroy()
-        game.Players.LocalPlayer.Character.Humanoid.PlatformStand = false
-
-        signal1:Disconnect()
-        signal2:Disconnect()
+        if (firedOriginally) then
+            game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler:Destroy()
+            game.Players.LocalPlayer.Character.HumanoidRootPart.GyroHandler:Destroy()
+            game.Players.LocalPlayer.Character.Humanoid.PlatformStand = false
+    
+            signal1:Disconnect()
+            signal2:Disconnect()
+        else
+            print("You have to enable the fly first to disable it once, goofball.")
+        end
     end
 end)
 
