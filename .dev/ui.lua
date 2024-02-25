@@ -239,4 +239,89 @@ local unspectate = tabs.player:AddButton({
     end
 })
 
+local fly = tabs.player:AddToggle("Fly", {
+    Title = "Flying",
+    Default = false
+})
+
+fly:OnChanged(function(value)
+    local character = localPlayer.Character or localPlayer.CharacterAdded:Wait()
+    local rootPart = character.HumanoidRootPart or character:WaitForChild("HumanoidRootPart")
+    local humanoid = character.Humanoid or character:WaitForChild("Humanoid")
+    
+    local signal1
+    local signal2
+
+    if (value) then
+        local controlModule = require(localPlayer.PlayerScripts:WaitForChild("PlayerModule"):WaitForChild("ControlModule"))
+        local bv = Instance.new("BodyVelocity")
+        bv.Name = "VelocityHandler"
+        bv.Parent = rootPart
+        bv.MaxForce = Vector3.new(0,0,0)
+        bv.Velocity = Vector3.new(0,0,0)
+        
+        local bg = Instance.new("BodyGyro")
+        bg.Name = "GyroHandler"
+        bg.Parent = rootPart
+        bg.MaxTorque = Vector3.new(9e9,9e9,9e9)
+        bg.P = 1000
+        bg.D = 50
+        
+        signal1 = localPlayer.CharacterAdded:Connect(function(newChar)
+            local bodyVelocity = Instance.new("BodyVelocity")
+            bodyVelocity.Name = "VelocityHandler"
+            bodyVelocity.Parent = newChar:WaitForChild("Humanoid").RootPart
+            bodyVelocity.MaxForce = Vector3.new(0,0,0)
+            bodyVelocity.Velocity = Vector3.new(0,0,0)
+        
+            local bodyGyro = Instance.new("BodyGyro")
+            bodyGyro.Name = "GyroHandler"
+            bodyGyro.Parent = newChar:WaitForChild("Humanoid").HumanoidRootPart
+            bodyGyro.MaxTorque = Vector3.new(9e9,9e9,9e9)
+            bodyGyro.P = 1000
+            bodyGyro.D = 50
+        end)
+        
+        local camera = game.Workspace.CurrentCamera
+        
+        signal2 = game:GetService("RunService").RenderStepped:Connect(function()
+            if (localPlayer.Character) and (localPlayer.Character:FindFirstChildOfClass("Humanoid")) and (humanoid.RootPart) and (rootPart:FindFirstChild("VelocityHandler")) and (rootPart:FindFirstChild("GyroHandler")) then
+        
+                rootPart.VelocityHandler.MaxForce = Vector3.new(9e9,9e9,9e9)
+                rootPart.GyroHandler.MaxTorque = Vector3.new(9e9,9e9,9e9)
+                humanoid.PlatformStand = true
+        
+                rootPart.GyroHandler.CFrame = camera.CoordinateFrame
+                rootPart.VelocityHandler.Velocity = Vector3.new()
+                
+                
+                local direction = controlModule:GetMoveVector()	
+                
+                if (direction.X) > 0 then
+                    rootPart.VelocityHandler.Velocity = rootPart.VelocityHandler.Velocity + camera.CFrame.RightVector * (direction.X * speed)
+                end
+                
+                if (direction.X) < 0 then
+                    rootPart.VelocityHandler.Velocity = rootPart.VelocityHandler.Velocity + camera.CFrame.RightVector * (direction.X * speed)
+                end
+                
+                if (direction.Z) > 0 then
+                    rootPart.VelocityHandler.Velocity = rootPart.VelocityHandler.Velocity - camera.CFrame.LookVector * (direction.Z * speed)
+                end
+                
+                if (direction.Z) < 0 then
+                    rootPart.VelocityHandler.Velocity = rootPart.VelocityHandler.Velocity - camera.CFrame.LookVector * (direction.Z * speed)
+                end
+            end
+        end)
+    else
+        game.Players.rootPart.VelocityHandler:Destroy()
+        game.Players.rootPart.GyroHandler:Destroy()
+        game.Players.humanoid.PlatformStand = false
+
+        signal1:Disconnect()
+        signal2:Disconnect()
+    end
+end)
+
 window:SelectTab(1)
