@@ -165,9 +165,13 @@ local resetPower = tabs.player:AddButton({
 local listed = {}
 local function getPlayersList()
     for _,v in ipairs(players:GetPlayers()) do
-        table.insert(listed, v.Name)
+        if (v.Name) ~= (localPlayer.Name) then
+            table.insert(listed, v.Name)
+        end
     end
 end
+
+getPlayersList()
 
 local gotoPlayer = tabs.player:AddDropdown("Player TP", {
     Title = "Goto Player",
@@ -192,6 +196,8 @@ players.PlayerRemoving:Connect(function(player)
 end)
 
 gotoPlayer:OnChanged(function(player)
+    local character = localPlayer.Character or localPlayer.CharacterAdded:Wait()
+    local rootPart = character.HumanoidRootPart or character:WaitForChild("HumanoidRootPart")
     local succ, err = xpcall(function()
         local newChar = players[player].Character or players[player].CharacterAdded:Wait()
         rootPart.CFrame = newChar.HumanoidRootPart.CFrame + Vector3.new(10, 5, 0)
