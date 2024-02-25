@@ -19,7 +19,7 @@ local window = flu:CreateWindow({
     Title = "Starry 💫",
     SubTitle = "github.com/hello-n-bye/Starry",
     TabWidth = 160,
-    Size = UDim2.fromOffset(580, 460),
+    Size = UDim2.fromOffset(580 / 2, 460 / 2),
     Acrylic = true,
     Theme = "Darker",
     MinimizeKey = Enum.KeyCode.LeftControl
@@ -178,6 +178,10 @@ local gotoPlayer = tabs.player:AddDropdown("Player TP", {
     Values = listed,
     Multi = false,
     Default = "Select One"
+})
+
+local spectate = tabs.player:AddDropdown("Spectate", {
+    
 })
 
 players.PlayerAdded:Connect(function(player)
