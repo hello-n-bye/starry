@@ -4,6 +4,8 @@ local functions = loadstring(game:HttpGetAsync("https://raw.githubusercontent.co
 local push = (http and http.request) or http_request or (fluxus and fluxus.request) or request
 local queue = (fluxus and fluxus.queueteleport) or queue_on_teleport
 
+local queueEnabled = true
+
 local players = game.Players
 
 local localPlayer = players.LocalPlayer
@@ -112,10 +114,22 @@ tabs.intro:AddButton({
     Title = "Rejoin",
     Description = "Join the server you are in again.",
     Callback = function()
-        queue('loadstring(game:HttpGet("https://raw.githubusercontent.com/hello-n-bye/starry/master/main.lua"))()')
+        if (queueEnabled) then
+            queue('loadstring(game:HttpGet("https://raw.githubusercontent.com/hello-n-bye/starry/master/main.lua"))()')
+        end
+
         game:GetService("TeleportService"):Teleport(game.PlaceId, localPlayer)
     end
 })
+
+local launch = tabs.intro:AddToggle("Auto Launch", {
+    Title = "Launch on Rejoin",
+    Default = true
+})
+
+launch:OnChanged(function(value)
+    queueEnabled = value
+end)
 
 -- player mods
 
@@ -131,7 +145,7 @@ local speed = tabs.player:AddSlider("Walking Speed", {
     end
 })
 
-local resetSpeed = tabs.player:AddButton({
+tabs.player:AddButton({
     Title = "Clear Speed",
     Description = "Changes your speed back to normal.",
     Callback = function()
@@ -154,7 +168,7 @@ local jumppower = tabs.player:AddSlider("Jumping Power", {
     end
 })
 
-local resetPower = tabs.player:AddButton({
+tabs.player:AddButton({
     Title = "Clear Jump-power",
     Description = "Changes your jumping power back to normal.",
     Callback = function()
@@ -190,6 +204,8 @@ local spectate = tabs.player:AddDropdown("Spectate", {
     Default = "Select One"
 })
 
+--[[
+
 local core = game:GetService("CoreGui")
 for _,v in ipairs(core:GetDescendants()) do
 	if (v.ClassName) == "TextLabel" then
@@ -207,6 +223,8 @@ for _,v in ipairs(core:GetDescendants()) do
         end
 	end
 end
+
+]]
 
 players.PlayerAdded:Connect(function(player)
     table.insert(listed, player.Name)
