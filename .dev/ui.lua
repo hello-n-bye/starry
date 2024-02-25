@@ -15,8 +15,8 @@ local rootPart = character.HumanoidRootPart or character:WaitForChild("HumanoidR
 local humanoid = character.Humanoid or character:WaitForChild("Humanoid")
 
 local presets = {
-    ['walkspeed'] = humanoid.WalkSpeed, -- by default, Roblox has this @ 16
-    ['jumppower'] = humanoid.JumpPower, -- by default, Roblox has this @ 50
+    ['walkspeed'] = humanoid.WalkSpeed,
+    ['jumppower'] = humanoid.JumpPower,
 }
 
 local window = flu:CreateWindow({
@@ -189,7 +189,6 @@ local function getPlayersList()
 end
 
 getPlayersList()
-table.insert("Select One", listed)
 
 local gotoPlayer = tabs.player:AddDropdown("Player TP", {
     Title = "Goto Player",
@@ -245,25 +244,29 @@ players.PlayerRemoving:Connect(function(player)
 end)
 
 gotoPlayer:OnChanged(function(player)
-    local character = localPlayer.Character or localPlayer.CharacterAdded:Wait()
-    local rootPart = character.HumanoidRootPart or character:WaitForChild("HumanoidRootPart")
-    local succ, err = xpcall(function()
-        local newChar = players[player].Character or players[player].CharacterAdded:Wait()
-        rootPart.CFrame = newChar.HumanoidRootPart.CFrame
-        gotoPlayer:SetValue("Select One")
-    end, function(error)
-        notify("Couldn't Teleport", tostring(error))
-    end)
+    if (player) ~= "Select One" then
+        local character = localPlayer.Character or localPlayer.CharacterAdded:Wait()
+        local rootPart = character.HumanoidRootPart or character:WaitForChild("HumanoidRootPart")
+        local succ, err = xpcall(function()
+            local newChar = players[player].Character or players[player].CharacterAdded:Wait()
+            rootPart.CFrame = newChar.HumanoidRootPart.CFrame
+            gotoPlayer:SetValue("Select One")
+        end, function(error)
+            notify("Couldn't Teleport", tostring(error))
+        end)
+    end
 end)
 
 spectate:OnChanged(function(player)
-    local camera = workspace.CurrentCamera
-    local succ, err = xpcall(function()
-        local newChar = players[player].Character or players[player].CharacterAdded:Wait()
-        camera.CameraSubject = newChar
-    end, function(error)
-        notify("Couldn't Spectate", tostring(error))
-    end)
+    if (player) ~= "Select One" then
+        local camera = workspace.CurrentCamera
+        local succ, err = xpcall(function()
+            local newChar = players[player].Character or players[player].CharacterAdded:Wait()
+            camera.CameraSubject = newChar
+        end, function(error)
+            notify("Couldn't Spectate", tostring(error))
+        end)
+    end
 end)
 
 local unspectate = tabs.player:AddButton({
