@@ -200,7 +200,7 @@ gotoPlayer:OnChanged(function(player)
     local rootPart = character.HumanoidRootPart or character:WaitForChild("HumanoidRootPart")
     local succ, err = xpcall(function()
         local newChar = players[player].Character or players[player].CharacterAdded:Wait()
-        rootPart.CFrame = newChar.HumanoidRootPart.CFrame + Vector3.new(10, 5, 0)
+        rootPart.CFrame = newChar.HumanoidRootPart.CFrame
     end, function(error)
         notify("Couldn't Teleport", tostring(error))
     end)
