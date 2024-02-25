@@ -210,7 +210,6 @@ gotoPlayer:OnChanged(function(player)
     local succ, err = xpcall(function()
         local newChar = players[player].Character or players[player].CharacterAdded:Wait()
         rootPart.CFrame = newChar.HumanoidRootPart.CFrame
-        gotoPlayer:SetValue("Select One")
     end, function(error)
         notify("Couldn't Teleport", tostring(error))
     end)
@@ -233,7 +232,6 @@ local unspectate = tabs.player:AddButton({
         local camera = workspace.CurrentCamera
         local newChar = localPlayer.Character or localPlayer.CharacterAdded:Wait()
         local succ, err = xpcall(function()
-            spectate:SetValue("Select One")
             camera.CameraSubject = newChar
         end, function(error)
             notify("Couldn't Stop Spectating", tostring(error))
