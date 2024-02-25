@@ -163,8 +163,10 @@ local resetPower = tabs.player:AddButton({
 })
 
 local listed = {}
-for _,v in ipairs(players:GetPlayers()) do
-    table.insert(listed, v.Name)
+local function getPlayersList()
+    for _,v in ipairs(players:GetPlayers()) do
+        table.insert(listed, v.Name)
+    end
 end
 
 local gotoPlayer = tabs.player:AddDropdown("Player TP", {
@@ -174,9 +176,28 @@ local gotoPlayer = tabs.player:AddDropdown("Player TP", {
     Default = "Select One"
 })
 
+players.PlayerAdded:Connect(function(player)
+    table.insert(listed, player.Name)
+    gotoPlayer:SetValues(listed)
+end)
+
+players.PlayerRemoving:Connect(function(player)
+    for i, name in ipairs(listed) do
+        if (name) == (player.Name) then
+            table.remove(listed, i)
+            break
+        end
+    end
+    gotoPlayer:SetValues(listed)
+end)
+
 gotoPlayer:OnChanged(function(player)
-    local newChar = players[player].Character or players[player].CharacterAdded:Wait()
-    rootPart.CFrame = newChar.HumanoidRootPart.CFrame + Vector3.new(10, 5, 0)
+    local succ, err = xpcall(function()
+        local newChar = players[player].Character or players[player].CharacterAdded:Wait()
+        rootPart.CFrame = newChar.HumanoidRootPart.CFrame + Vector3.new(10, 5, 0)
+    end, function(error)
+        notify("Couldn't Teleport", tostring(error))
+    end)
 end)
 
 window:SelectTab(1)
