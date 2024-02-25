@@ -190,8 +190,6 @@ local spectate = tabs.player:AddDropdown("Spectate", {
     Default = "Select One"
 })
 
-functions.yield(0.25)
-
 local core = game:GetService("CoreGui")
 for _,v in ipairs(core:GetDescendants()) do
 	if (v.ClassName) == "TextLabel" then
