@@ -20,7 +20,7 @@ local window = flu:CreateWindow({
     Title = "Starry 💫",
     SubTitle = "github.com/hello-n-bye/Starry",
     TabWidth = 160,
-    Size = UDim2.fromOffset(625, 460 / 1.25),
+    Size = UDim2.fromOffset(625, 460 / 1.5),
     Acrylic = true,
     Theme = "Darker",
     MinimizeKey = Enum.KeyCode.LeftControl
@@ -111,13 +111,7 @@ tabs.intro:AddButton({
     Title = "Rejoin",
     Description = "Join the server you are in again.",
     Callback = function()
-        queueteleport([[local succ, err = xpcall(function()
-            loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/hello-n-bye/starry/master/src/checker.lua", true))()
-        
-            print('loaded fully')
-        end, function(code)
-            warn('code execution failure: ' .. code)
-        end)]])
+        queueteleport('loadstring(game:HttpGet("https://raw.githubusercontent.com/hello-n-bye/starry/master/main.lua"))()')
         game:GetService("TeleportService"):Teleport(game.PlaceId, localPlayer)
     end
 })
