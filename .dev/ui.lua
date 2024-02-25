@@ -251,11 +251,7 @@ gotoPlayer:OnChanged(function(player)
         local newChar = players[player].Character or players[player].CharacterAdded:Wait()
         rootPart.CFrame = newChar.HumanoidRootPart.CFrame
     end, function(error)
-        if (error) == fattyError then
-            print("Frick you fatty error!!!")
-        else
-            notify("Couldn't Teleport", tostring(error))
-        end
+        warn("💫 Starry Debugger: " .. error)
     end)
 end)
 
@@ -265,11 +261,7 @@ spectate:OnChanged(function(player)
         local newChar = players[player].Character or players[player].CharacterAdded:Wait()
         camera.CameraSubject = newChar
     end, function(error)
-        if (error) == fattyError then
-            print("Frick you fatty error!!!")
-        else
-            notify("Couldn't Spectate", tostring(error))
-        end
+        warn("💫 Starry Debugger: " .. error)
     end)
 end)
 
