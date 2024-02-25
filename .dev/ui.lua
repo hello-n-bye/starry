@@ -1,6 +1,7 @@
 local flu = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
 
-local push = (syn and syn.request) or (http and http.request) or http_request or (fluxus and fluxus.request) or request
+local push = (http and http.request) or http_request or (fluxus and fluxus.request) or request
+local queue = (fluxus and fluxus.queueteleport) or queue_on_teleport
 
 local players = game.Players
 
@@ -110,6 +111,13 @@ tabs.intro:AddButton({
     Title = "Rejoin",
     Description = "Join the server you are in again.",
     Callback = function()
+        queueteleport([[local succ, err = xpcall(function()
+            loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/hello-n-bye/starry/master/src/checker.lua", true))()
+        
+            print('loaded fully')
+        end, function(code)
+            warn('code execution failure: ' .. code)
+        end)]])
         game:GetService("TeleportService"):Teleport(game.PlaceId, localPlayer)
     end
 })
