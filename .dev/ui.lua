@@ -106,6 +106,14 @@ tabs.intro:AddButton({
     end
 })
 
+tabs.intro:AddButton({
+    Title = "Rejoin",
+    Description = "Join the server you are in again.",
+    Callback = function()
+        game:GetService("TeleportService"):Teleport(game.PlaceId, localPlayer)
+    end
+})
+
 -- player mods
 
 local speed = tabs.player:AddSlider("Walking Speed", {
