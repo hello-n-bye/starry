@@ -210,6 +210,7 @@ gotoPlayer:OnChanged(function(player)
     local succ, err = xpcall(function()
         local newChar = players[player].Character or players[player].CharacterAdded:Wait()
         rootPart.CFrame = newChar.HumanoidRootPart.CFrame
+        gotoPlayer:SetValue("Select One")
     end, function(error)
         notify("Couldn't Teleport", tostring(error))
     end)
@@ -232,102 +233,12 @@ local unspectate = tabs.player:AddButton({
         local camera = workspace.CurrentCamera
         local newChar = localPlayer.Character or localPlayer.CharacterAdded:Wait()
         local succ, err = xpcall(function()
+            spectate:SetValue("Select One")
             camera.CameraSubject = newChar
         end, function(error)
             notify("Couldn't Stop Spectating", tostring(error))
         end)
     end
 })
-
-local fly = tabs.player:AddToggle("Fly", {
-    Title = "Flying",
-    Default = false
-})
-
-fly:OnChanged(function(value)
-    local character = localPlayer.Character or localPlayer.CharacterAdded:Wait()
-
-    local signal1
-    local signal2
-
-    local firedOriginally = false
-
-    if (value) then
-        firedOriginally = true
-
-        local controlModule = require(localPlayer.PlayerScripts:WaitForChild("PlayerModule"):WaitForChild("ControlModule"))
-        local bodyVelocity = Instance.new("BodyVelocity")
-        bodyVelocity.Name = "VelocityHandler"
-        bodyVelocity.Parent = localPlayer.Character.HumanoidRootPart
-        bodyVelocity.MaxForce = Vector3.new(0,0,0)
-        bodyVelocity.Velocity = Vector3.new(0,0,0)
-        
-        local bodyGyro = Instance.new("BodyGyro")
-        bodyGyro.Name = "GyroHandler"
-        bodyGyro.Parent = localPlayer.Character.HumanoidRootPart
-        bodyGyro.MaxTorque = Vector3.new(9e9,9e9,9e9)
-        bodyGyro.P = 1000
-        bodyGyro.D = 50
-        
-        signal1 = localPlayer.CharacterAdded:Connect(function(newChar)
-            local bodyVelocity = Instance.new("BodyVelocity")
-            bodyVelocity.Name = "VelocityHandler"
-            bodyVelocity.Parent = newChar:WaitForChild("Humanoid").RootPart
-            bodyVelocity.MaxForce = Vector3.new(0,0,0)
-            bodyVelocity.Velocity = Vector3.new(0,0,0)
-        
-            local bodyGyro = Instance.new("BodyGyro")
-            bodyGyro.Name = "GyroHandler"
-            bodyGyro.Parent = newChar:WaitForChild("Humanoid").HumanoidRootPart
-            bodyGyro.MaxTorque = Vector3.new(9e9,9e9,9e9)
-            bodyGyro.P = 1000
-            bodyGyro.D = 50
-        end)
-        
-        local camera = game.Workspace.CurrentCamera
-        
-        signal2 = game:GetService("RunService").RenderStepped:Connect(function()
-            if (localPlayer.Character) and (localPlayer.Character:FindFirstChildOfClass("Humanoid")) and (localPlayer.Character.Humanoid.RootPart) and (localPlayer.Character.HumanoidRootPart:FindFirstChild("VelocityHandler")) and (localPlayer.Character.HumanoidRootPart:FindFirstChild("GyroHandler")) then
-        
-                localPlayer.Character.HumanoidRootPart.VelocityHandler.MaxForce = Vector3.new(9e9,9e9,9e9)
-                localPlayer.Character.HumanoidRootPart.GyroHandler.MaxTorque = Vector3.new(9e9,9e9,9e9)
-                localPlayer.Character.Humanoid.PlatformStand = true
-        
-                localPlayer.Character.HumanoidRootPart.GyroHandler.CFrame = camera.CoordinateFrame
-                localPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity = Vector3.new()
-                
-                
-                local direction = controlModule:GetMoveVector()	
-                
-                if (direction.X) > 0 then
-                    localPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity = localPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity + camera.CFrame.RightVector * (direction.X * speed)
-                end
-                
-                if (direction.X) < 0 then
-                    localPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity = localPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity + camera.CFrame.RightVector * (direction.X * speed)
-                end
-                
-                if (direction.Z) > 0 then
-                    localPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity = localPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity - camera.CFrame.LookVector * (direction.Z * speed)
-                end
-                
-                if (direction.Z) < 0 then
-                    localPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity = localPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity - camera.CFrame.LookVector * (direction.Z * speed)
-                end
-            end
-        end)
-    else
-        if (firedOriginally) then
-            game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler:Destroy()
-            game.Players.LocalPlayer.Character.HumanoidRootPart.GyroHandler:Destroy()
-            game.Players.LocalPlayer.Character.Humanoid.PlatformStand = false
-    
-            signal1:Disconnect()
-            signal2:Disconnect()
-        else
-            print("You have to enable the fly first to disable it once, goofball.")
-        end
-    end
-end)
 
 window:SelectTab(1)
