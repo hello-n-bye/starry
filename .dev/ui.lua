@@ -111,7 +111,7 @@ tabs.intro:AddButton({
     Title = "Rejoin",
     Description = "Join the server you are in again.",
     Callback = function()
-        queueteleport('loadstring(game:HttpGet("https://raw.githubusercontent.com/hello-n-bye/starry/master/main.lua"))()')
+        queue('loadstring(game:HttpGet("https://raw.githubusercontent.com/hello-n-bye/starry/master/main.lua"))()')
         game:GetService("TeleportService"):Teleport(game.PlaceId, localPlayer)
     end
 })
