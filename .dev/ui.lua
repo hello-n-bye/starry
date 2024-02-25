@@ -156,12 +156,12 @@ local resetPower = tabs.player:AddButton({
 
 local listed = {}
 for _,v in ipairs(players:GetPlayers()) do
-    table.insert(listed, v)
+    table.insert(listed, '"' .. v.Name .. '"')
 end
 
 local gotoPlayer = tabs.player:AddDropdown("Player TP", {
     Title = "Goto Player",
-    Values = listed,
+    Values = {table.concat(listed, ", ")},
     Multi = false,
     Default = "Select One"
 })
