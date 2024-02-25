@@ -250,7 +250,6 @@ gotoPlayer:OnChanged(function(player)
     local succ, err = xpcall(function()
         local newChar = players[player].Character or players[player].CharacterAdded:Wait()
         rootPart.CFrame = newChar.HumanoidRootPart.CFrame
-        gotoPlayer:SetValue("Select One")
     end, function(error)
         if (error) == fattyError then
             print("Frick you fatty error!!!")
@@ -265,7 +264,6 @@ spectate:OnChanged(function(player)
     local succ, err = xpcall(function()
         local newChar = players[player].Character or players[player].CharacterAdded:Wait()
         camera.CameraSubject = newChar
-        spectate:SetValue("Select One")
     end, function(error)
         if (error) == fattyError then
             print("Frick you fatty error!!!")
