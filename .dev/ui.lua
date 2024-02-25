@@ -179,19 +179,20 @@ local gotoPlayer = tabs.player:AddDropdown("Player TP", {
     Title = "Goto Player",
     Values = listed,
     Multi = false,
-    Default = 1
+    Default = 0
 })
 
 local spectate = tabs.player:AddDropdown("Spectate", {
     Title = "Spectate Player",
     Values = listed,
     Multi = false,
-    Default = 1
+    Default = 0
 })
 
 players.PlayerAdded:Connect(function(player)
     table.insert(listed, player.Name)
     gotoPlayer:SetValues(listed)
+    spectate:SetValues(listed)
 end)
 
 players.PlayerRemoving:Connect(function(player)
@@ -202,6 +203,7 @@ players.PlayerRemoving:Connect(function(player)
         end
     end
     gotoPlayer:SetValues(listed)
+    spectate:SetValues(listed)
 end)
 
 gotoPlayer:OnChanged(function(player)
@@ -242,10 +244,16 @@ local unspectate = tabs.player:AddButton({
 local core = game:GetService("CoreGui")
 for _,v in ipairs(core:GetDescendants()) do
 	if (v.ClassName) == "TextLabel" then
-		if (v.Text) == "Spectate Player" or (v.Text) == "Goto Player" then
+		if (v.Text) == "Spectate Player" then
 			local newLabel = v.Parent.Parent.TextButton.TextLabel
 			newLabel.Text = "Select One"
 		end
+
+        task.wait(0.15)
+        if (v.Text) == (v.Text) == "Goto Player" then
+			local newLabel = v.Parent.Parent.TextButton.TextLabel
+			newLabel.Text = "Select One"
+        end
 	end
 end
 
