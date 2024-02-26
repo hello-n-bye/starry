@@ -98,7 +98,7 @@ function clip(string)
 end
 
 function to(pos)
-    return rootPart.CFrame = pos
+    rootPart.CFrame = pos
 end
 
 local Options = flu.Options
