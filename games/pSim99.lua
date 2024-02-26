@@ -2,7 +2,7 @@ local functions = loadstring(game:HttpGetAsync("https://raw.githubusercontent.co
 local __game = loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/hello-n-bye/starry/master/modules/petSim.lua", true))()
 
 local states = {
-    farming = false,    -- auto farm
+    farming = true,    -- auto farm
     zones = false,      -- auto purchase zones
     hatching = false,   -- auto hatch
     mailer = false,     -- auto send loot to main via mail
@@ -12,12 +12,12 @@ local states = {
     free = false,       -- auto claim free loot areas
     egg = false,        -- auto buy egg slot
     equip = false,      -- auto buy pet equip
-    minigames = false   -- auto do minigames for you
-    animation = false   -- show or remove hatch animation
-    speed = false       -- allow your player to move fast
-    noclip = false      -- walk through objects
-    diamond = false     -- auto farm the diamond VIP zone (if available)
-    carot = false       -- give your pets infinite speed
+    minigames = false,   -- auto do minigames for you
+    animation = false,   -- show or remove hatch animation
+    speed = false,       -- allow your player to move fast
+    noclip = false,      -- walk through objects
+    diamond = false,     -- auto farm the diamond VIP zone (if available)
+    carot = false,       -- give your pets infinite speed
 }
 
 local players = game:GetService("Players")

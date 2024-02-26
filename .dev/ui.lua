@@ -2,16 +2,41 @@ local flu = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/rel
 local functions = loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/hello-n-bye/starry/master/modules/miscellaneous.lua", true))()
 
 local queue = (fluxus and fluxus.queueteleport) or queue_on_teleport
-
 local queueEnabled = true
 
-local players = game.Players
+local replicatedStorage = game:GetService("ReplicatedStorage")
+local players = game:GetService("Players")
+local virtualUser = game:GetService("VirtualUser")
 
 local localPlayer = players.LocalPlayer
 
 local character = localPlayer.Character or localPlayer.CharacterAdded:Wait()
 local rootPart = character.HumanoidRootPart or character:WaitForChild("HumanoidRootPart")
 local humanoid = character.Humanoid or character:WaitForChild("Humanoid")
+
+local events = replicatedStorage:WaitForChild("events")
+
+local vending = replicatedStorage.Vending
+
+local function role(tag)
+    if replicatedStorage:FindFirstChild("RemoteEvents"):FindFirstChild("OutsideRole") ~= nil  then
+        local event = replicatedStorage:FindFirstChild("RemoteEvents"):FindFirstChild("OutsideRole")
+
+        event:FireServer(tostring(tag))
+    end
+end
+
+local function train(method)
+    events:WaitForChild("RainbowWhatStat"):FireServer(method)
+end
+
+local function give(item)
+    if (item) == "Armor" then
+        events:WaitForChild("Vending"):FireServer(3, "Armor2", "Armor", tostring(localPlayer), 1)
+    else
+        events:WaitForChild("GiveTool"):FireServer(tostring(item:gsub(" ", "")))
+    end
+end
 
 local presets = {
     ['walkspeed'] = humanoid.WalkSpeed,
@@ -33,34 +58,18 @@ local tabs = {
         Title = " Main",
         Icon = ""
     }),
-    pets = window:AddTab({
-        Title = " Pets",
-        Icon = "bone"
-    }),
-    farming = window:AddTab({
-        Title = " Farming",
-        Icon = "carrot"
-    }),
-    trading = window:AddTab({
-        Title = " Trading",
-        Icon = "paperclip"
-    }),
     player = window:AddTab({
         Title = " Player",
         Icon = "baby"
     }),
-    minigames = window:AddTab({
-        Title = " Minigames",
-        Icon = "gamepad"
+    utils = window:AddTab({
+        Title = " Utilities",
+        Icon = "settings",
     }),
-    digging = window:AddTab({
-        Title = " Digging",
-        Icon = "shovel"
-    }),
-    fishing = window:AddTab({
-        Title = " Fishing",
-        Icon = "package-search"
-    }),
+    stats = window:AddTab({
+        Title = " Buffs",
+        Icon = ""
+    })
 }
 
 function notify(head, content)
@@ -86,6 +95,10 @@ function clip(string)
     else
 		notify("Failed", "Your executor doesn't support clipboarding.")
 	end
+end
+
+function to(pos)
+    return rootPart.CFrame = pos
 end
 
 local Options = flu.Options
@@ -140,15 +153,34 @@ do
     end)
 end
 
--- pet tab
-
-do
-    
-end
-
 -- player mods
 
 do
+    local custom = tabs.player:AddInput("Custom Role", {
+        Title = "Custom Role",
+        Default = "",
+        Placeholder = "Starry 💫",
+        Numeric = false,
+        Finished = true,
+        Callback = function(value)
+            role(value)
+        end
+    })
+
+    local idle = tabs.player:AddToggle("Anti AFK", {
+        Title = "Anti-Idle",
+        Default = true
+    })
+
+    idle:OnChanged(function(value)
+        if (value) then
+            localPlayer.Idled:connect(function()
+                virtualUser:CaptureController()
+                virtualUser:ClickButton2(Vector2.new())
+            end)
+        end
+    end)
+
     local speed = tabs.player:AddSlider("Walking Speed", {
         Title = "Walkspeed",
         Description = "Changes how fast you walk.",
@@ -171,106 +203,124 @@ do
             notify("Walkspeed Changed", "Congrats, you're normal again.")
         end
     })
-    
-    local jumppower = tabs.player:AddSlider("Jumping Power", {
-        Title = "Jump-power",
-        Description = "Changes how high you can jump.",
-        Default = presets.jumppower,
-        Min = 1,
-        Max = 781.25,
-        Rounding = 1,
-        Callback = function(value)
-            humanoid.JumpPower = value
-        end
-    })
-    
-    tabs.player:AddButton({
-        Title = "Clear Jump-power",
-        Description = "Changes your jumping power back to normal.",
+end
+
+-- utils
+
+do
+    local npcs = tabs.utils:AddButton("Capture NPCs", {
+        Title = "Capture NPCs",
+        Description = "Grab every NPC and claim them as yours.",
         Callback = function()
-            jumppower:SetValue(presets.jumppower)
-            humanoid.JumpPower = presets.jumppower
+            local function doggy()
+                for _,v in pairs(localPlayer.PlayerGui.Assets.Note.Note.Note:GetChildren()) do
+                    if (v.Name:match("Circle")) and (v.Visible == true) then
+
+                        give(tostring(v.Name:gsub("Circle", "")))
+
+                        task.wait(0.1)
+                        localPlayer.Backpack:WaitForChild(tostring(v.Name:gsub("Circle", ""))).Parent = character
+
+                        to(CFrame.new(-257.56839, 29.4499969, -910.452637, -0.238445505, 7.71292363e-09, 0.971155882, 1.2913591e-10, 1, -7.91029819e-09, -0.971155882, -1.76076387e-09, -0.238445505))
+                        task.wait(0.5)
+
+                        events:WaitForChild("CatFed"):FireServer(tostring(v.Name:gsub("Circle", "")))
+                    end
+                end
+
+                task.wait(2)
+
+                for _ = 1, 3 do
+                    TeleportTo(CFrame.new(-203.533081, 30.4500484, -790.901428, -0.0148558766, 8.85941187e-09, -0.999889672, 2.65695732e-08, 1, 8.46563175e-09, 0.999889672, -2.64408779e-08, -0.0148558766) + Vector3.new(0, 5, 0))
+                    task.wait(.1)
+                end
+            end
+    
+            local function agent()
+                give("Louise")
+
+                task.wait(.1)
+                localPlayer.Backpack:WaitForChild("Louise").Parent = character
+
+                events:WaitForChild("LouiseGive"):FireServer(2)
+            end	
+    
+            local function uncle()
+                give("Key")
+
+                task.wait(.1)
+                localPlayer.Backpack:WaitForChild("Key").Parent = character
+
+                wait(.5)
+                events.KeyEvent:FireServer()
+            end
             
-            notify("Jump-power Changed", "Congrats, you're normal again.")
+            uncle()
+
+            task.wait(3)
+            doggy()
+
+            task.wait(3); agent()
         end
     })
-    
-    local listed = {}
-    local function getPlayersList()
-        for _,v in ipairs(players:GetPlayers()) do
-            if (v.Name) ~= (localPlayer.Name) then
-                table.insert(listed, v.Name)
-            end
+
+    local tools = tabs.utils:AddDropdown("Give Tools", {
+        Title = "Give Tools",
+        Values = {},
+        Multi = false,
+        Default = "Select One"
+    })
+
+    for _,v in ipairs(vending.Weapons:GetDescendants()) do
+        if (v.ClassName == "Model") then
+            table.insert(v.Name, tools.Values)
         end
     end
-    
-    getPlayersList()
-    
-    local gotoPlayer = tabs.player:AddDropdown("Player TP", {
-        Title = "Goto Player",
-        Values = listed,
-        Multi = false,
+
+    tools:OnChanged(function(value)
+		local args = {
+            [1] = 3,
+            [2] = value,
+            [3] = "Weapons",
+            [4] = localPlayer.Name,
+            [6] = 0
+        }
+
+        events:WaitForChild("Vending"):FireServer(unpack(args))
+    end)
+
+    local items = tabs.utils:AddDropdown("Give Items", {
+        Title = "Give Items",
+        Values = {"Gold Pizza"},
+        Mutli = false,
         Default = "Select One"
     })
-    
-    local spectate = tabs.player:AddDropdown("Spectate", {
-        Title = "Spectate Player",
-        Values = listed,
-        Multi = false,
-        Default = "Select One"
-    })
-    
-    players.PlayerAdded:Connect(function(player)
-        table.insert(listed, player.Name)
-        gotoPlayer:SetValues(listed)
-        spectate:SetValues(listed)
+
+    items:OnChanged(function(value)
+        give(value)
     end)
-    
-    players.PlayerRemoving:Connect(function(player)
-        for i, name in ipairs(listed) do
-            if (name) == (player.Name) then
-                table.remove(listed, i)
-                break
-            end
-        end
-        gotoPlayer:SetValues(listed)
-        spectate:SetValues(listed)
-    end)
-    
-    gotoPlayer:OnChanged(function(player)
-        local character = localPlayer.Character or localPlayer.CharacterAdded:Wait()
-        local rootPart = character.HumanoidRootPart or character:WaitForChild("HumanoidRootPart")
-        local succ, err = xpcall(function()
-            local newChar = players[player].Character or players[player].CharacterAdded:Wait()
-            rootPart.CFrame = newChar.HumanoidRootPart.CFrame
-        end, function(error)
-            warn("💫 Starry Debugger: " .. error)
-        end)
-    end)
-    
-    spectate:OnChanged(function(player)
-        local camera = workspace.CurrentCamera
-        local succ, err = xpcall(function()
-            local newChar = players[player].Character or players[player].CharacterAdded:Wait()
-            camera.CameraSubject = newChar
-        end, function(error)
-            warn("💫 Starry Debugger: " .. error)
-        end)
-    end)
-    
-    local unspectate = tabs.player:AddButton({
-        Title = "Unspectate",
-        Description = "Lock your camera back on yourself.",
+
+    local armor = tabs.utils:AddButton("Give Armor", {
+        Title = "Equip Armor",
+        Description = "Suit up by equipping some armor.",
         Callback = function()
-            local camera = workspace.CurrentCamera
-            local newChar = localPlayer.Character or localPlayer.CharacterAdded:Wait()
-            local succ, err = xpcall(function()
-                camera.CameraSubject = newChar
-            end, function(error)
-                notify("Couldn't Stop Spectating", tostring(error))
-            end)
+            events:WaitForChild("Vending"):FireServer(3, "Armor2", "Armor", tostring(localPlayer), 1)
         end
     })
+
+    local pizzas = tabs.utils:AddToggle("Infinite Golden Pizza", {
+        Title = "Infinite Golden Pizza",
+        Default = false
+    })
+
+    pizzas:OnChanged(function()
+        while (pizzas.Value) do
+            task.wait()
+
+            give("Gold Pizza")
+        end
+    end)
 end
+
 
 window:SelectTab(1)
