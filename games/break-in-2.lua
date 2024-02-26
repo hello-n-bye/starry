@@ -1,5 +1,4 @@
 local flu = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
-local functions = loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/hello-n-bye/starry/master/modules/miscellaneous.lua", true))()
 
 local queue = (fluxus and fluxus.queueteleport) or queue_on_teleport
 local queueEnabled = true
@@ -189,6 +188,8 @@ end
 -- utils
 
 do
+    --[[
+
     local npcs = tabs.utils:AddButton("Capture NPCs", {
         Title = "Capture NPCs",
         Description = "Grab every NPC and claim them as yours.",
@@ -244,6 +245,8 @@ do
             task.wait(3); agent()
         end
     })
+
+    ]]
 
     local tools = tabs.utils:AddDropdown("Give Tools", {
         Title = "Give Tools",
