@@ -1,5 +1,4 @@
 local flu = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
-local functions = loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/hello-n-bye/starry/master/modules/miscellaneous.lua", true))()
 
 local queue = (fluxus and fluxus.queueteleport) or queue_on_teleport
 local queueEnabled = true
