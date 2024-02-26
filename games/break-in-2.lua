@@ -14,19 +14,19 @@ local character = localPlayer.Character or localPlayer.CharacterAdded:Wait()
 local rootPart = character.HumanoidRootPart or character:WaitForChild("HumanoidRootPart")
 local humanoid = character.Humanoid or character:WaitForChild("Humanoid")
 
-local events = replicatedStorage:WaitForChild("events")
+local events = replicatedStorage:FindFirstChild("events")
 
 local vending = replicatedStorage.Vending
 
 local function train(method)
-    events:WaitForChild("RainbowWhatStat"):FireServer(method)
+    events:FindFirstChild("RainbowWhatStat"):FireServer(method)
 end
 
 local function give(item)
     if (item) == "Armor" then
-        events:WaitForChild("Vending"):FireServer(3, "Armor2", "Armor", tostring(localPlayer), 1)
+        events:FindFirstChild("Vending"):FireServer(3, "Armor2", "Armor", tostring(localPlayer), 1)
     else
-        events:WaitForChild("GiveTool"):FireServer(tostring(item:gsub(" ", "")))
+        events:FindFirstChild("GiveTool"):FireServer(tostring(item:gsub(" ", "")))
     end
 end
 
@@ -200,12 +200,12 @@ do
                         give(tostring(v.Name:gsub("Circle", "")))
 
                         task.wait(0.1)
-                        localPlayer.Backpack:WaitForChild(tostring(v.Name:gsub("Circle", ""))).Parent = character
+                        localPlayer.Backpack:FindFirstChild(tostring(v.Name:gsub("Circle", ""))).Parent = character
 
                         to(CFrame.new(-257.56839, 29.4499969, -910.452637, -0.238445505, 7.71292363e-09, 0.971155882, 1.2913591e-10, 1, -7.91029819e-09, -0.971155882, -1.76076387e-09, -0.238445505))
                         task.wait(0.5)
 
-                        events:WaitForChild("CatFed"):FireServer(tostring(v.Name:gsub("Circle", "")))
+                        events:FindFirstChild("CatFed"):FireServer(tostring(v.Name:gsub("Circle", "")))
                     end
                 end
 
@@ -221,16 +221,16 @@ do
                 give("Louise")
 
                 task.wait(.1)
-                localPlayer.Backpack:WaitForChild("Louise").Parent = character
+                localPlayer.Backpack:FindFirstChild("Louise").Parent = character
 
-                events:WaitForChild("LouiseGive"):FireServer(2)
+                events:FindFirstChild("LouiseGive"):FireServer(2)
             end	
     
             local function uncle()
                 give("Key")
 
                 task.wait(.1)
-                localPlayer.Backpack:WaitForChild("Key").Parent = character
+                localPlayer.Backpack:FindFirstChild("Key").Parent = character
 
                 wait(.5)
                 events.KeyEvent:FireServer()
@@ -267,7 +267,7 @@ do
             [6] = 0
         }
 
-        events:WaitForChild("Vending"):FireServer(unpack(args))
+        events:FindFirstChild("Vending"):FireServer(unpack(args))
     end)
 
     local items = tabs.utils:AddDropdown("Give Items", {
@@ -285,7 +285,7 @@ do
         Title = "Equip Armor",
         Description = "Suit up by equipping some armor.",
         Callback = function()
-            events:WaitForChild("Vending"):FireServer(3, "Armor2", "Armor", tostring(localPlayer), 1)
+            events:FindFirstChild("Vending"):FireServer(3, "Armor2", "Armor", tostring(localPlayer), 1)
         end
     })
 
