@@ -18,14 +18,6 @@ local events = replicatedStorage:WaitForChild("events")
 
 local vending = replicatedStorage.Vending
 
-local function role(tag)
-    if replicatedStorage:FindFirstChild("RemoteEvents"):FindFirstChild("OutsideRole") ~= nil  then
-        local event = replicatedStorage:FindFirstChild("RemoteEvents"):FindFirstChild("OutsideRole")
-
-        event:FireServer(tostring(tag))
-    end
-end
-
 local function train(method)
     events:WaitForChild("RainbowWhatStat"):FireServer(method)
 end
@@ -98,7 +90,7 @@ function clip(string)
 end
 
 function to(pos)
-    return rootPart.CFrame = pos
+    return rootPart.CFrame == pos
 end
 
 local Options = flu.Options
@@ -156,17 +148,6 @@ end
 -- player mods
 
 do
-    local custom = tabs.player:AddInput("Custom Role", {
-        Title = "Custom Role",
-        Default = "",
-        Placeholder = "Starry 💫",
-        Numeric = false,
-        Finished = true,
-        Callback = function(value)
-            role(value)
-        end
-    })
-
     local idle = tabs.player:AddToggle("Anti AFK", {
         Title = "Anti-Idle",
         Default = true
@@ -320,6 +301,12 @@ do
             give("Gold Pizza")
         end
     end)
+end
+
+-- stats tab
+
+do
+
 end
 
 window:SelectTab(1)
