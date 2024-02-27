@@ -120,7 +120,7 @@ end
 do
     local godmode = tabs.player:AddToggle("Godmode", {
         Title = "Godmode",
-        Description = "Scuffed godmode, fixing soon."
+        Description = "Scuffed godmode, fixing soon.",
         Default = false
     })
 
