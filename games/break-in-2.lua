@@ -1,8 +1,5 @@
 local flu = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
 
-local queue = (fluxus and fluxus.queueteleport) or queue_on_teleport
-local queueEnabled = true
-
 local replicatedStorage = game:GetService("ReplicatedStorage")
 local players = game:GetService("Players")
 local virtualUser = game:GetService("VirtualUser")
@@ -13,25 +10,24 @@ local character = localPlayer.Character or localPlayer.CharacterAdded:Wait()
 local rootPart = character.HumanoidRootPart or character:WaitForChild("HumanoidRootPart")
 local humanoid = character.Humanoid or character:WaitForChild("Humanoid")
 
-local events = replicatedStorage:FindFirstChild("events")
+local events = replicatedStorage:WaitForChild("Events")
 
 local vending = replicatedStorage.Vending
 
 local function train(method)
-    events:FindFirstChild("RainbowWhatStat"):FireServer(method)
+    events:WaitForChild("RainbowWhatStat"):FireServer(method)
 end
 
 local function give(item)
     if (item) == "Armor" then
-        events:FindFirstChild("Vending"):FireServer(3, "Armor2", "Armor", tostring(localPlayer), 1)
+        events:WaitForChild("Vending"):FireServer(3, "Armor2", "Armor", tostring(localPlayer), 1)
     else
-        events:FindFirstChild("GiveTool"):FireServer(tostring(item:gsub(" ", "")))
+        events:WaitForChild("GiveTool"):FireServer(tostring(item:gsub(" ", "")))
     end
 end
 
 local presets = {
     ['walkspeed'] = humanoid.WalkSpeed,
-    ['jumppower'] = humanoid.JumpPower,
 }
 
 local window = flu:CreateWindow({
@@ -59,6 +55,10 @@ local tabs = {
     }),
     stats = window:AddTab({
         Title = " Buffs",
+        Icon = "shield"
+    }),
+    anims = window:AddTab({
+        Title = " Animations",
         Icon = ""
     })
 }
@@ -79,13 +79,13 @@ function notify(head, content)
 end
 
 function clip(string)
-	local board = setclipboard or toclipboard or set_clipboard or (Clipboard and Clipboard.set)
+    local board = setclipboard or toclipboard or set_clipboard or (Clipboard and Clipboard.set)
 
-	if (board) then
-		board(string)
+    if (board) then
+        board(string)
     else
-		notify("Failed", "Your executor doesn't support clipboarding.")
-	end
+        notify("Failed", "Your executor doesn't support clipboarding.")
+    end
 end
 
 function to(pos)
@@ -108,45 +108,39 @@ do
         Title = "Source-code",
         Content = "Find us @ github.com/hello-n-bye/Starry"
     })
-    
-    tabs.intro:AddButton({
-        Title = "Join Community",
-        Description = "Be apart my community for my main project.",
-        Callback = function()
-            if (clip) then
-                clip("https://discord.gg/dshMH6Edeu")
-                notify("Modulus", "Copied invite to your clipboard")
-            else
-                notify("Modulus", "discord.gg/dshMH6Edeu")
-            end
-        end
+
+    tabs.intro:AddParagraph({
+        Title = "Contributor",
+        Content = "Thanks to imanewma__n for some key modules used."
     })
-    
-    tabs.intro:AddButton({
-        Title = "Rejoin",
-        Description = "Join the server you are in again.",
-        Callback = function()
-            if (queueEnabled) then
-                queue('loadstring(game:HttpGet("https://raw.githubusercontent.com/hello-n-bye/starry/master/main.lua"))()')
-            end
-    
-            game:GetService("TeleportService"):Teleport(game.PlaceId, localPlayer)
-        end
-    })
-    
-    local launch = tabs.intro:AddToggle("Auto Launch", {
-        Title = "Launch on Rejoin",
-        Default = true
-    })
-    
-    launch:OnChanged(function(value)
-        queueEnabled = value
-    end)
 end
 
 -- player mods
 
 do
+    local godmode = tabs.player:AddToggle("Godmode", {
+        Title = "Godmode",
+        Description = "Scuffed godmode, fixing soon."
+        Default = false
+    })
+
+    godmode:OnChanged(function(value)
+        while (value) do
+            local backpack = localPlayer.Backpack
+
+            -- give
+            give("Gold Pizza")
+
+            -- equip
+            task.wait(0.05)
+            events.BackpackEvent:FireServer("Equip", backpack:FindFirstChild("GoldPizza"))
+
+            -- heal
+            task.wait(0.25)
+            events.CurePlayer:FireServer(localPlayer, localPlayer)
+        end
+    end)
+
     local idle = tabs.player:AddToggle("Anti AFK", {
         Title = "Anti-Idle",
         Default = true
@@ -188,9 +182,7 @@ end
 -- utils
 
 do
-    --[[
-
-    local npcs = tabs.utils:AddButton("Capture NPCs", {
+    local npcs = tabs.utils:AddButton({
         Title = "Capture NPCs",
         Description = "Grab every NPC and claim them as yours.",
         Callback = function()
@@ -201,16 +193,16 @@ do
                         give(tostring(v.Name:gsub("Circle", "")))
 
                         task.wait(0.1)
-                        localPlayer.Backpack:FindFirstChild(tostring(v.Name:gsub("Circle", ""))).Parent = character
+                        localPlayer.Backpack:WaitForChild(tostring(v.Name:gsub("Circle", ""))).Parent = character
 
                         to(CFrame.new(-257.56839, 29.4499969, -910.452637, -0.238445505, 7.71292363e-09, 0.971155882, 1.2913591e-10, 1, -7.91029819e-09, -0.971155882, -1.76076387e-09, -0.238445505))
                         task.wait(0.5)
 
-                        events:FindFirstChild("CatFed"):FireServer(tostring(v.Name:gsub("Circle", "")))
+                        events:WaitForChild("CatFed"):FireServer(tostring(v.Name:gsub("Circle", "")))
                     end
                 end
 
-                task.wait(2)
+                task.wait(2)    
 
                 for _ = 1, 3 do
                     TeleportTo(CFrame.new(-203.533081, 30.4500484, -790.901428, -0.0148558766, 8.85941187e-09, -0.999889672, 2.65695732e-08, 1, 8.46563175e-09, 0.999889672, -2.64408779e-08, -0.0148558766) + Vector3.new(0, 5, 0))
@@ -222,19 +214,19 @@ do
                 give("Louise")
 
                 task.wait(.1)
-                localPlayer.Backpack:FindFirstChild("Louise").Parent = character
+                localPlayer.Backpack:WaitForChild("Louise").Parent = character
 
-                events:FindFirstChild("LouiseGive"):FireServer(2)
+                events:WaitForChild("LouiseGive"):FireServer(2)
             end	
     
             local function uncle()
                 give("Key")
 
                 task.wait(.1)
-                localPlayer.Backpack:FindFirstChild("Key").Parent = character
+                localPlayer.Backpack:WaitForChild("Key").Parent = character
 
                 wait(.5)
-                events.KeyEvent:FireServer()
+                replicatedStorage:WaitForChild("Events").KeyEvent:FireServer()
             end
             
             uncle()
@@ -246,23 +238,23 @@ do
         end
     })
 
-    ]]
-
-    local tools = tabs.utils:AddDropdown("Give Tools", {
-        Title = "Give Tools",
-        Values = {},
-        Multi = false,
-        Default = "Select One"
-    })
+    local looool = {}
 
     for _,v in ipairs(vending.Weapons:GetDescendants()) do
-        if (v.ClassName == "Model") then
-            table.insert(v.Name, tools.Values)
+        if (v:IsA("Model")) then
+            table.insert(looool, v.Name)
         end
     end
 
-    tools:OnChanged(function(value)
-		local args = {
+    local weapons = tabs.utils:AddDropdown("Give Weapons", {
+        Title = "Give Weapons",
+        Values = looool,
+        Mutli = false,
+        Default = "Select One"
+    })
+
+    weapons:OnChanged(function(value)
+        local arg = {
             [1] = 3,
             [2] = value,
             [3] = "Weapons",
@@ -270,7 +262,7 @@ do
             [6] = 0
         }
 
-        events:FindFirstChild("Vending"):FireServer(unpack(args))
+        events:WaitForChild("Vending"):FireServer(unpack(arg))
     end)
 
     local items = tabs.utils:AddDropdown("Give Items", {
@@ -284,11 +276,11 @@ do
         give(value)
     end)
 
-    local armor = tabs.utils:AddButton("Give Armor", {
+    local armor = tabs.utils:AddButton({
         Title = "Equip Armor",
         Description = "Suit up by equipping some armor.",
         Callback = function()
-            events:FindFirstChild("Vending"):FireServer(3, "Armor2", "Armor", tostring(localPlayer), 1)
+            events:WaitForChild("Vending"):FireServer(3, "Armor2", "Armor", tostring(localPlayer), 1)
         end
     })
 
@@ -309,7 +301,74 @@ end
 -- stats tab
 
 do
+    tabs.stats:AddButton({
+        Title = "Max Speed",
+        Description = "Gain the maximum amount of speed buffs.",
+        Callback = function()
+            local i = 0
 
+            while task.wait(1) do
+                i = i + 1
+        
+                if (i) ~= 5 then
+                    train("Speed")
+                end
+            end
+        end
+    })
+
+    tabs.stats:AddButton({
+        Title = "+1 Speed",
+        Description = "Gain a new speed buff.",
+        Callback = function()
+            train("Speed")
+        end
+    })
+
+    tabs.stats:AddButton({
+        Title = "Max Strength",
+        Description = "Automatically gain the maximum amount of strength buffs.",
+        Callback = function()
+            local i = 0
+
+            while task.wait(1) do
+                i = i + 1
+        
+                if (i) ~= 5 then
+                    train("Strength")
+                end
+            end
+        end
+    })
+
+    tabs.stats:AddButton({
+        Title = "+1 Strength",
+        Description = "Grant yourself the next tier of strength.",
+        Callback = function()
+            train("Strength")
+        end
+    })
+end
+
+-- anims tab
+
+do
+    local spoofwalk = tabs.anims:AddToggle("Spoof Walking Animation", {
+        Title = "Outside Walk Spoof",
+        Default = false
+    })
+
+    spoofwalk:OnChanged(function(value)
+        events.SetWalkAnim:FireServer(value)
+    end)
+
+    tabs.anims:AddButton({
+        Title = "Trigger Found Sequence",
+        Description = "Only works in the second ending.",
+        Callback = function()
+            game:GetService("ReplicatedStorage").Events.LarryBossEvents:FireServer("CaughtPlayer")
+        end
+    })
 end
 
 window:SelectTab(1)
