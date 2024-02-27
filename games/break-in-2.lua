@@ -128,14 +128,11 @@ do
         while (value) do
             local backpack = localPlayer.Backpack
 
-            -- give
             give("Gold Pizza")
 
-            -- equip
             task.wait(0.05)
             events.BackpackEvent:FireServer("Equip", backpack:FindFirstChild("GoldPizza"))
 
-            -- heal
             task.wait(0.25)
             events.CurePlayer:FireServer(localPlayer, localPlayer)
         end
