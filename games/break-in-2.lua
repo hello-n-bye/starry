@@ -125,7 +125,7 @@ do
     })
 
     godmode:OnChanged(function(value)
-        while (value) do
+        repeat
             local backpack = localPlayer.Backpack
 
             give("Gold Pizza")
@@ -135,7 +135,7 @@ do
 
             task.wait(0.25)
             events.CurePlayer:FireServer(localPlayer, localPlayer)
-        end
+        until not (value)
     end)
 
     local idle = tabs.player:AddToggle("Anti AFK", {
