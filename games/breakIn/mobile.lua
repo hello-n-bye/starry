@@ -92,7 +92,7 @@ function to(pos)
     return rootPart.CFrame == pos
 end
 
-local Options = flu.Options
+local options = flu.Options
 
 flu:Notify({
     Title = "Star The Repo ⭐",
@@ -125,7 +125,7 @@ do
     })
 
     godmode:OnChanged(function(value)
-        repeat
+        while (value) == true do
             local backpack = localPlayer.Backpack
 
             give("Gold Pizza")
@@ -135,7 +135,7 @@ do
 
             task.wait(0.25)
             events.CurePlayer:FireServer(localPlayer, localPlayer)
-        until not (value)
+        end
     end)
 
     local idle = tabs.player:AddToggle("Anti AFK", {
@@ -260,6 +260,7 @@ do
         }
 
         events:WaitForChild("Vending"):FireServer(unpack(arg))
+        weapons:SetValues("Select One")
     end)
 
     local items = tabs.utils:AddDropdown("Give Items", {
@@ -271,6 +272,7 @@ do
 
     items:OnChanged(function(value)
         give(value)
+        items:SetValues("Select One")
     end)
 
     local armor = tabs.utils:AddButton({
