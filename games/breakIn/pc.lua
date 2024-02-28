@@ -260,7 +260,6 @@ do
         }
 
         events:WaitForChild("Vending"):FireServer(unpack(arg))
-        weapons:SetValues("Select One")
     end)
 
     local items = tabs.utils:AddDropdown("Give Items", {
@@ -272,7 +271,6 @@ do
 
     items:OnChanged(function(value)
         give(value)
-        items:SetValues("Select One")
     end)
 
     local armor = tabs.utils:AddButton({
