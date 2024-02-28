@@ -103,6 +103,8 @@ do
         end
     })
 
+    ---
+
     local reRun = tabs.intro:AddToggle("Re-run", {
         Title = "Run on Rejoin",
         Description = "Automatically run the script after you've rejoined.",
@@ -123,6 +125,8 @@ do
         table.insert(users, v.Name)
     end
 
+    ---
+
     players.PlayerAdded:Connect(function(player)
         if (player) ~= localPlayer.Name then
             table.insert(users, player.Name)
@@ -138,6 +142,8 @@ do
         end
     end)
 
+    ---
+
     local goto = tabs.player:AddDropdown("Goto Player", {
         Title = "Goto Player",
         Values = users,
@@ -152,6 +158,8 @@ do
             to(newRoot.CFrame)
         end
     end)
+
+    ---
 
     local spectate = tabs.player:AddDropdown("Watch Player", {
         Title = "Watch Player",

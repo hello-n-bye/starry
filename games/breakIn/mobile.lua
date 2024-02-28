@@ -138,6 +138,8 @@ do
         end
     end)
 
+    ---
+
     local idle = tabs.player:AddToggle("Anti AFK", {
         Title = "Anti-Idle",
         Default = true
@@ -151,6 +153,8 @@ do
             end)
         end
     end)
+
+    ---
 
     local speed = tabs.player:AddSlider("Walking Speed", {
         Title = "Walkspeed",
@@ -235,6 +239,8 @@ do
         end
     })
 
+    ---
+
     local looool = {}
 
     for _,v in ipairs(vending.Weapons:GetDescendants()) do
@@ -262,6 +268,8 @@ do
         events:WaitForChild("Vending"):FireServer(unpack(arg))
     end)
 
+    ---
+
     local items = tabs.utils:AddDropdown("Give Items", {
         Title = "Give Items",
         Values = {"Gold Pizza"},
@@ -273,6 +281,8 @@ do
         give(value)
     end)
 
+    ---
+
     local armor = tabs.utils:AddButton({
         Title = "Equip Armor",
         Description = "Suit up by equipping some armor.",
@@ -280,6 +290,7 @@ do
             events:WaitForChild("Vending"):FireServer(3, "Armor2", "Armor", tostring(localPlayer), 1)
         end
     })
+
 
     local pizzas = tabs.utils:AddToggle("Infinite Golden Pizza", {
         Title = "Infinite Golden Pizza",
@@ -358,14 +369,6 @@ do
     spoofwalk:OnChanged(function(value)
         events.SetWalkAnim:FireServer(value)
     end)
-
-    tabs.anims:AddButton({
-        Title = "Trigger Found Sequence",
-        Description = "Only works in the second ending.",
-        Callback = function()
-            game:GetService("ReplicatedStorage").Events.LarryBossEvents:FireServer("CaughtPlayer")
-        end
-    })
 end
 
 window:SelectTab(1)

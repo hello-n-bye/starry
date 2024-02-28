@@ -12,7 +12,7 @@ end
 
 if (placeid) == 13864661000 or (placeid) == 13864667823 then
     if (placeid) == 13864661000 then
-        return (print("💫 Starry: You must be in a game to use the script!"))
+        loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/hello-n-bye/starry/master/games/breakIn/lobby/" .. isMobile() ..".lua", true))()
     else
         loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/hello-n-bye/starry/master/games/breakIn/" .. isMobile() ..".lua", true))()
     end
