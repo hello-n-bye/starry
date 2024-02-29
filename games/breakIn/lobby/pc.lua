@@ -205,7 +205,7 @@ do
         end
     })
 
-    tabs.game:AddPrivate({
+    tabs.game:AddButton({
         Title = "Instant Load",
         Description = "Boot into your own private server instantly.",
         Callback = function()
