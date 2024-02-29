@@ -16,6 +16,7 @@ local currentCamera = workspace.CurrentCamera
 
 local presets = {
     ['walkspeed'] = humanoid.WalkSpeed,
+    ['jumppower'] = humanoid.JumpPower,
 }
 
 local window = flu:CreateWindow({
@@ -181,6 +182,47 @@ do
             local newChar = localPlayer.Character or localPlayer.CharacterAdded:Wait()
 
             currentCamera.CameraSubject = newChar
+        end
+    })
+
+    ---
+
+    local speed = tabs.player:AddSlider("Walking Speed", {
+        Title = "Walkspeed",
+        Description = "Changes how fast you walk.",
+        Default = presets.walkspeed,
+        Min = 1,
+        Max = 250,
+        Rounding = 1,
+        Callback = function(value)
+            humanoid.WalkSpeed = value
+        end
+    })
+    
+    tabs.player:AddButton({
+        Title = "Clear Speed",
+        Description = "Changes your speed back to normal.",
+        Callback = function()
+            speed:SetValue(presets.walkspeed)
+            humanoid.WalkSpeed = presets.walkspeed
+    
+            notify("Walkspeed Changed", "Congrats, you're normal again.")
+        end
+    })
+
+    ---
+
+    tabs.player:AddButton({
+        Title = "Void Client Kicks",
+        Description = "Make it so client-sided anti-cheats can't kick you.",
+        Callback = function()
+            OldNamecall = hookmetamethod(game, "__namecall", newcclosure(function(...)
+                if (string.lower(getnamecallmethod())) == "kick" then
+                    return nil
+                end
+
+                return OldNamecall(...)
+            end))
         end
     })
 end
