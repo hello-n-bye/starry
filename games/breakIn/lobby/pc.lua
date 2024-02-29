@@ -204,6 +204,14 @@ do
             end
         end
     })
+
+    tabs.game:AddPrivate({
+        Title = "Instant Load",
+        Description = "Boot into your own private server instantly.",
+        Callback = function()
+            teleport:Teleport(13864667823, localPlayer)
+        end
+    })
 end
 
 -- troll tab
