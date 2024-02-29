@@ -8,7 +8,59 @@ local virtualUser = game:GetService("VirtualUser")
 local replicatedStorage = game:GetService("ReplicatedStorage")
 local teleport = game:GetService("TeleportService")
 
+local events = replicatedStorage:FindFirstChild("RemoteEvents")
+
 local localPlayer = players.LocalPlayer
+
+local outfit = false
+
+local function role(name)
+    if (name) == "Book" or (name) == "Phone" then
+        local outside = events:FindFirstChild("OutsideRole")
+
+        if (name) == "Book" then
+            outside:FireServer(name, true, outfit)
+        else
+            outside:FireServer(name, false, outfit)
+        end
+    else
+        local creation = events:FindFirstChild("MakeRole")
+
+        if (name) == "MedKit" or (name) == "Bat" then
+            creation:FireServer(name, false, outfit)
+        else
+            creation:FireServer(name, true, outfit)
+        end
+    end
+end
+
+local function get()
+    local character = workspace[localPlayer.Name]
+    local backpack = localPlayer.Backpack
+
+    local lollipop = (backpack:FindFirstChild("Lollipop")) or (character:FindFirstChild("Lollipop"))
+    local drink = (backpack:FindFirstChild("Bottle")) or (character:FindFirstChild("Bottle"))
+
+    local bat = (backpack:FindFirstChild("Bat")) or (character:FindFirstChild("Bat"))
+    local medkit = (backpack:FindFirstChild("MedKit")) or (character:FindFirstChild("MedKit"))
+
+    local phone = (backpack:FindFirstChild("Phone")) or (character:FindFirstChild("Phone"))
+    local book = (backpack:FindFirstChild("Book")) or (character:FindFirstChild("Book"))
+
+    if (lollipop) then
+        return "The Hyper"
+    elseif (drink) then
+        return "The Sporty"
+    elseif (bat) then
+        return "The Protector"
+    elseif (medkit) then
+        return "The Medic"
+    elseif (phone) then
+        return "The Hacker"
+    elseif (book) then
+        return "The Nerd"
+    end
+end
 
 local window = flu:CreateWindow({
     Title = "Starry 💫",
@@ -29,9 +81,13 @@ local tabs = {
         Title = " Game",
         Icon = "curly-braces"
     }),
-    lobby = window:AddTab({
-        Title = " Lobby",
+    roles = window:AddTab({
+        Title = " Roles",
         Icon = "egg"
+    }),
+    troll = window:AddTab({
+        Title = " Trolling",
+        Icon = "skull"
     })
 }
 
@@ -46,7 +102,7 @@ flu:Notify({
 
 flu:Notify({
     Title = "Loaded For Lobby 🚀",
-    Content = "Exploits for the lobby of Break In. Join a game to get the full experience.",
+    Content = "Join a game to get the full experience, and use more powerful cheats.",
     Duration = 8
 })
 
@@ -70,6 +126,8 @@ do
         end
     })
 
+    ---
+
     local reRun = tabs.intro:AddToggle("Re-run", {
         Title = "Run on Rejoin",
         Description = "Automatically run the script after you've rejoined.",
@@ -84,21 +142,47 @@ end
 -- lobby tab
 
 do
-    tabs.lobby:AddButton({
+    tabs.roles:AddButton({
         Title = "Hacker",
         Description = "Gives you the Hacker role, when playing.",
         Callback = function()
-            replicatedStorage.RemoteEvents:FindFirstChild("OutsideRole"):FireServer("Phone")
+            role("Phone")
         end
     })
 
-    tabs.lobby:AddButton({
+    tabs.roles:AddButton({
         Title = "Nerd",
         Description = "Unlock your inner nerd, and literally be a dork.",
         Callback = function()
-            replicatedStorage.RemoteEvents:FindFirstChild("OutsideRole"):FireServer("Book")
+            role("Book")
         end
     })
+
+    ---
+
+    local free = tabs.roles:AddDropdown("Free Roles", {
+        Title = "Change Free Role",
+        Values = {"MedKit", "Bottle", "Lollipop", "Bat"},
+        Multi = false,
+        Default = "Select One"
+    })
+
+    free:OnChanged(function(value)
+        if (value) ~= "Select One" then
+            role(value)
+        end
+    end)
+
+    ---
+
+    local change = tabs.roles:AddToggle("Change Outfits", {
+        Title = "Change Outfits",
+        Default = false
+    })
+
+    change:OnChanged(function(value)
+        outfit = value
+    end)
 end
 
 -- game tab
@@ -120,6 +204,44 @@ do
             end
         end
     })
+end
+
+-- troll tab
+
+do
+    local panic = false
+
+    local spasm = tabs.troll:AddToggle("Spasm", {
+        Title = "Spasm",
+        Description = "Aggressively change your player size on the server.",
+        Default = false
+    })
+
+    spasm:OnChanged(function(value)
+        panic = value
+
+        local inverse = false
+
+        if (get()) == "The Medic" or (get()) == "The Protector" or (get()) == "The Hacker" then
+            inverse = true
+        end
+
+        while (panic) do
+            task.wait()
+
+            if (inverse) then
+                role("Lollipop")
+
+                task.wait()
+                role("Bat")
+            else
+                role("Bat")
+
+                task.wait()
+                role("Lollipop")
+            end
+        end
+    end)
 end
 
 window:SelectTab(1)
