@@ -181,6 +181,8 @@ end
 -- player tab
 
 do
+    --[[
+
     tabs.player:AddButton({
         Title = "Heal",
         Description = "Bring yourself back to full health.",
@@ -206,6 +208,8 @@ do
             heal(localPlayer.Name)
         end
     end)
+
+    ]]
 
     ---
 
@@ -528,10 +532,20 @@ do
         Title = "Pickup Floor Money",
         Description = "Grab all of the money left on the ground.",
         Callback = function()
+            local old = rootPart.CFrame
+
             for _,v in ipairs(workspace:GetChildren()) do
                 if (v.Name) == "Money3" then
                     rootPart.CFrame = v.CFrame + Vector3.new(0, 5, 0)
                     task.wait(0.15)
+                end
+            end
+
+            rootPart.CFrame = old
+
+            for _,v in ipairs(workspace:GetChildren()) do
+                if (v.Name) == "Money3" then
+                    v:Destroy()
                 end
             end
         end
