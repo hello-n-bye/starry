@@ -135,7 +135,7 @@ do
 
     tabs.intro:AddParagraph({
         Title = "Contributor",
-        Content = "Thanks to imanewma__n for 4 features."
+        Content = "Thanks to imanewma__n for some features."
     })
 
     ---
