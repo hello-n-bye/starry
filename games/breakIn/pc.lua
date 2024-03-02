@@ -8,6 +8,7 @@ local players = game:GetService("Players")
 local virtualUser = game:GetService("VirtualUser")
 local lighting = game:GetService("Lighting")
 local teleport = game:GetService("TeleportService")
+local tweenService = game:GetService("TweenService")
 
 local localPlayer = players.LocalPlayer
 
@@ -21,6 +22,9 @@ local vending = replicatedStorage.Vending
 
 local godded = false
 local noslip = false
+local farmer = false
+
+local oldPos_Farming = nil
 
 local backpack = localPlayer.Backpack
 
@@ -49,7 +53,44 @@ local function give(item)
 end
 
 local function to(pos)
-    return rootPart.CFrame == pos
+    rootPart.CFrame = pos
+end
+
+local function tween(pos)
+    tweenService:Create(rootPart, TweenInfo.new(
+        0.5,
+        Enum.EasingStyle.Sine
+    ), {
+        CFrame = pos
+    }):Play()
+end
+
+local function get()
+    local character = workspace[localPlayer.Name]
+    local backpack = localPlayer.Backpack
+
+    local lollipop = (backpack:FindFirstChild("Lollipop")) or (character:FindFirstChild("Lollipop"))
+    local drink = (backpack:FindFirstChild("Bottle")) or (character:FindFirstChild("Bottle"))
+
+    local bat = (backpack:FindFirstChild("Bat")) or (character:FindFirstChild("Bat"))
+    local medkit = (backpack:FindFirstChild("MedKit")) or (character:FindFirstChild("MedKit"))
+
+    local phone = (backpack:FindFirstChild("Phone")) or (character:FindFirstChild("Phone"))
+    local book = (backpack:FindFirstChild("Book")) or (character:FindFirstChild("Book"))
+
+    if (lollipop) then
+        return "The Hyper"
+    elseif (drink) then
+        return "The Sporty"
+    elseif (bat) then
+        return "The Protector"
+    elseif (medkit) then
+        return "The Medic"
+    elseif (phone) then
+        return "The Hacker"
+    elseif (book) then
+        return "The Nerd"
+    end
 end
 
 local presets = {
@@ -78,6 +119,10 @@ local tabs = {
     player = window:AddTab({
         Title = " Player",
         Icon = "baby"
+    }),
+    combat = window:AddTab({
+        Title = " Combat",
+        Icon = "sword"
     }),
     utils = window:AddTab({
         Title = " Utilities",
@@ -275,6 +320,49 @@ do
             notify("Walkspeed Changed", "Congrats, you're normal again.")
         end
     })
+end
+
+-- combat
+
+do
+    local autofarm = tabs.combat:AddToggle("Auto farm", {
+        Title = "Auto Farm",
+        Description = "Automatically kill bad guys!",
+        Default = false
+    })
+
+    autofarm:OnChanged(function(value)
+        farmer = value
+
+        if (value) then
+            if not (oldPos_Farming) then
+                oldPos_Farming = rootPart.CFrame
+            end
+
+            while (farmer) do
+                if (badGuys) then
+                    for _,v in ipairs(badGuys:GetChildren()) do
+                        local newRoot = v:FindFirstChild("HumanoidRootPart")
+                        if (newRoot) then
+                            if (get() == "The Nerd") or (get() == "The Hyper") or (get() == "The Sporty") then
+                                newRoot.CFrame = CFrame.new(rootPart.Position + Vector3.new(0, 5.25, 0))
+                            else
+                                newRoot.CFrame = CFrame.new(rootPart.Position + Vector3.new(0, 6.25, 0))
+                            end
+                        end
+                    end
+                end
+                task.wait()
+            end
+        else
+            if (oldPos_Farming) == nil then
+                print("Starry whaled approchaing false error! 🐋")
+            else
+                rootPart.CFrame = oldPos_Farming
+                oldPos_Farming = nil
+            end
+        end
+    end)
 end
 
 -- utils
@@ -555,6 +643,51 @@ end
 -- world tab
 
 do
+    local tps = tabs.world:AddDropdown("Map TPs", {
+        Title = "Map Teleports",
+        Values = {"Base", "Middle Room", "Combat", "Evil Enterance", "Gym", "Vault", "Kitchen", "Attic", "Shop", "Bridge", "Spawn", "Electrical", "Rainbow Pizza", "Boss Zone", "Boss Rock", "Main Stage", "Lantern"},
+        Multi = false,
+        Default = "Select One",
+    })
+
+    tps:OnChanged(function(value)
+        if (value) == "Base" then
+            tween(CFrame.new(-208.547775, 30.4590473, -790.797852, -0.00346331322, 4.98604491e-09, 0.99999398, 1.30425786e-08, 1, -4.94090413e-09, -0.99999398, 1.30253888e-08, -0.00346331322))
+        elseif (value) == "Combat" then
+            tween(CFrame.new(-261.34845, 62.7139359, -724.488159, -1.79693988e-13, -3.2983916e-08, 1, -1.07291555e-07, 1, 3.2983916e-08, -1, -1.07291555e-07, -1.83232878e-13))
+        elseif (value) == "Gym" then
+            tween(CFrame.new(-256.629486, 63.4500465, -839.432983, 0.999921203, -2.7656041e-08, -0.0125548635, 2.82457258e-08, 1, 4.67913708e-08, 0.0125548635, -4.71423043e-08, 0.999921203))
+        elseif (value) == "Vault" then
+            tween(CFrame.new(-291.475739, 30.4500484, -790.533081, 0.00482816575, -4.86728702e-08, 0.999988317, -6.35414139e-08, 1, 4.89802296e-08, -0.999988317, -6.37771578e-08, 0.00482816575))
+        elseif (value) == "Kitchen" then
+            tween(CFrame.new(-255.886139, 30.4500484, -721.825317, 0.00906592328, 6.37471231e-08, -0.999958932, -4.54148967e-08, 1, 6.33379997e-08, 0.999958932, 4.48388136e-08, 0.00906592328))
+        elseif (value) == "Shop" then
+            tween(CFrame.new(-248.251205, 30.4500484, -842.678345, 0.999852598, 4.45619897e-08, 0.017169375, -4.45284272e-08, 1, -2.3370581e-09, -0.017169375, 1.57218838e-09, 0.999852598))
+        elseif (value) == "Bridge" then
+            tween(CFrame.new(-231.054459, 95.4499969, -790.746521, 0.00668484438, 3.52284785e-10, 0.999977648, 1.01747538e-07, 1, -1.03247433e-09, -0.999977648, 1.01752164e-07, 0.00668484438))
+        elseif (value) == "Attic" then
+            tween(CFrame.new(-287.437775, 95.4500275, -780.781433, 0.740976393, 2.15010032e-09, 0.671531022, -3.9196304e-09, 1, 1.12318466e-09, -0.671531022, -3.46440676e-09, 0.740976393))
+        elseif (value) == "Spawn" then
+            tween(CFrame.new(74.5977631, 29.4499969, -524.733887, 1, 2.49527812e-08, 4.49900161e-14, -2.49527812e-08, 1, 1.61761289e-08, -4.45863744e-14, -1.61761289e-08, 1))
+        elseif (value) == "Electrical" then
+            tween(CFrame.new(-124.204483, 29.25, -787.395874, -0.672930658, 1.02147091e-08, -0.739705622, 1.61808469e-08, 1, -9.11009435e-10, 0.739705622, -1.25821096e-08, -0.672930658))
+        elseif (value) == "Middle Room" then
+            tween(CFrame.new(-260.818848, 30.5996704, -784.877991, -0.0198783204, 4.94843881e-08, -0.999802411, 8.56550955e-08, 1, 4.77911541e-08, 0.999802411, -8.46881605e-08, -0.0198783204))
+        elseif (value) == "Evil Enterance" then
+            tween(CFrame.new(-1353.15796, -346.246887, -810.455688, 0.0348753519, -5.79011861e-08, 0.999391675, 8.21193638e-08, 1, 5.50707462e-08, -0.999391675, 8.01487943e-08, 0.0348753519))
+        elseif (value) == "Rainbow Pizza" then
+            tween(CFrame.new(-1502.05579, -368.046814, -885.071106, 0.0242382511, 4.45842723e-08, 0.999706209, -4.52039473e-09, 1, -4.4487777e-08, -0.999706209, -3.44076079e-09, 0.0242382511))
+        elseif (value) == "Boss Zone" then
+            tween(CFrame.new(-1563.1604, -368.711945, -991.387329, 0.999939799, -1.11001053e-09, 0.0109716114, 7.12828407e-10, 1, 3.62048098e-08, -0.0109716114, -3.61948089e-08, 0.999939799))
+        elseif (value) == "Boss Rock" then
+            tween(CFrame.new(-1496.57507, -325.1586, -1065.0708, 0.0181015152, -6.20831955e-08, 0.999836147, -3.8816065e-08, 1, 6.27961114e-08, -0.999836147, -3.99464106e-08, 0.0181015152))
+        elseif (value) == "Main Stage" then
+            tween(CFrame.new(-1563.35999, -366.546814, -1135.27747, 0.992206514, 7.79071243e-08, -0.124604166, -8.7027729e-08, 1, -6.77534047e-08, 0.124604166, 7.8069391e-08, 0.992206514))
+        elseif (value) == "Lantern" then
+            tween(CFrame.new(-1485.51794, -281.012756, -1270.55884, -0.859563828, 3.25664118e-08, -0.511028409, -2.34444109e-08, 1, 1.03161341e-07, 0.511028409, 1.00654518e-07, -0.859563828))
+        end
+    end)
+
     --[[
 
     tabs.world:AddButton({
