@@ -137,6 +137,13 @@ do
     reRun:OnChanged(function(value)
         queueEnabled = value
     end)
+
+    ---
+
+    tabs.intro:AddParagraph({
+        Title = "30+ Features",
+        Content = "As of March 2nd, we've hit a milestone of 30+ working features."
+    })
 end
 
 -- lobby tab
