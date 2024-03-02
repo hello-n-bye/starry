@@ -63,7 +63,7 @@ local function get()
 end
 
 local window = flu:CreateWindow({
-    Title = "Starry 💫",
+    Title = "Starry Mobile 💫",
     SubTitle = "github.com/hello-n-bye/Starry",
     TabWidth = 160,
     Size = UDim2.fromOffset(625, 460 / 1.5),

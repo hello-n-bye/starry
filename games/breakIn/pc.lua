@@ -18,12 +18,15 @@ local humanoid = character.Humanoid or character:WaitForChild("Humanoid")
 
 local events = replicatedStorage:WaitForChild("Events")
 
+local combatZone = game:GetService("Workspace"):FindFirstChild("EvilArea"):FindFirstChild("Rug"):FindFirstChild("PartTex")
+
 local vending = replicatedStorage.Vending
 
 local godded = false
 local noslip = false
 local farmer = false
 
+local badGuys = workspace:FindFirstChild("BadGuys")
 local oldPos_Farming = nil
 
 local backpack = localPlayer.Backpack
@@ -339,15 +342,25 @@ do
                 oldPos_Farming = rootPart.CFrame
             end
 
+            tween(CFrame.new(-259.504608, 60.9477654, -745.243408, -0.999818861, 7.66576136e-08, 0.0190321952, 7.65230581e-08, 1, -7.79803688e-09, -0.0190321952, -6.34022257e-09, -0.999818861))
+
+            task.wait(0.8)
+            
             while (farmer) do
+                if (get() == "The Nerd") or (get() == "The Hyper") or (get() == "The Sporty") then
+                    tween(combatZone.CFrame + Vector3.new(0, 2.4, 0))
+                else
+                    tween(combatZone.CFrame + Vector3.new(0, 3.78, 0))
+                end
+
                 if (badGuys) then
                     for _,v in ipairs(badGuys:GetChildren()) do
                         local newRoot = v:FindFirstChild("HumanoidRootPart")
                         if (newRoot) then
                             if (get() == "The Nerd") or (get() == "The Hyper") or (get() == "The Sporty") then
-                                newRoot.CFrame = CFrame.new(rootPart.Position + Vector3.new(0, 5.25, 0))
+                                newRoot.CFrame = CFrame.new(rootPart.Position + Vector3.new(0, 5, 0))
                             else
-                                newRoot.CFrame = CFrame.new(rootPart.Position + Vector3.new(0, 6.25, 0))
+                                newRoot.CFrame = CFrame.new(rootPart.Position + Vector3.new(0, 6, 0))
                             end
                         end
                     end
@@ -358,7 +371,9 @@ do
             if (oldPos_Farming) == nil then
                 print("Starry whaled approchaing false error! 🐋")
             else
-                rootPart.CFrame = oldPos_Farming
+                task.wait(0.5)
+
+                tween(oldPos_Farming)
                 oldPos_Farming = nil
             end
         end
@@ -624,12 +639,12 @@ do
 
             for _,v in ipairs(workspace:GetChildren()) do
                 if (v.Name) == "Money3" then
-                    rootPart.CFrame = v.CFrame + Vector3.new(0, 5, 0)
+                    to(v.CFrame + Vector3.new(0, 5, 0))
                     task.wait(0.15)
                 end
             end
 
-            rootPart.CFrame = old
+            to(old)
 
             for _,v in ipairs(workspace:GetChildren()) do
                 if (v.Name) == "Money3" then
