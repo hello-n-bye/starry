@@ -219,6 +219,16 @@ do
             teleport:Teleport(13864667823, localPlayer)
         end
     })
+
+    tabs.game:AddButton({
+        Title = "Join Break In 1",
+        Description = "Experience the first game!",
+        Callback = function()
+            -- firetouchinterest(rootPart, portal, 1)
+
+            teleport:Teleport(3851622790, localPlayer)
+        end
+    })
 end
 
 -- troll tab
