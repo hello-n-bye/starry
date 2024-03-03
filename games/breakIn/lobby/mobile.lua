@@ -1,5 +1,27 @@
 local flu = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
 
+local BETA = false
+
+if not (BETA) then
+    if (getgenv().starry) then
+        flu:Notify({
+            Title = "💫  Starry Can't Start.",
+            Content = "You can't run Starry more than once.",
+            Duration = 5
+        })
+    
+        return false, "Couldn't start. Please make sure another Starry instance isn't already running!"
+    else
+        getgenv().starry = true
+    end
+else
+    flu:Notify({
+        Title = "💫  Starry Launched as BETA.",
+        Content = "Expect bugs, glitches or problems when having the ability to run more than one instance at a time.",
+        Duration = 5
+    })
+end
+
 local queueteleport = queue_on_teleport or (fluxus and fluxus.queue_on_teleport)
 local queueEnabled = false
 
