@@ -22,6 +22,8 @@ else
     })
 end
 
+local timestamp = tick()
+
 local queueteleport = queue_on_teleport or (fluxus and fluxus.queue_on_teleport)
 local queueEnabled = false
 
@@ -292,3 +294,5 @@ do
 end
 
 window:SelectTab(1)
+
+print("Loaded in " .. string.format("%.2f", tick() - timestamp) .. " seconds. ⭐")
