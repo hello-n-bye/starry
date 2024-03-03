@@ -378,6 +378,24 @@ do
             end
         end
     end)
+
+    ---
+
+    local remaining = workspace:FindFirstChild("TheHouse"):FindFirstChild("BreakRoom"):FindFirstChild("Board"):FindFirstChild("Part1"):FindFirstChild("SurfaceGui"):FindFirstChild("HowMany")
+
+    tabs.combat:AddParagraph({
+        Title = remaining.Text .. " Enemies Remaining"
+    })
+    
+    remaining:GetPropertyChangedSignal("Text"):Connect(function()
+        for _,v in ipairs(game:GetService("CoreGui"):FindFirstChild("ScreenGui"):GetDescendants()) do 
+            if (v:IsA("TextLabel")) then 
+                if (string.find(v.Text, "Enemies Remaining")) then 
+                    v.Text = remaining.Text .. " Enemies Remaining"
+                end
+            end
+        end
+    end)
 end
 
 -- utils
@@ -718,6 +736,20 @@ do
     tabs.world:AddButton({
         Title = "Solve Timeline",
         Description = "Automatically complete the timeline in chronological order.",
+        Callback = function()
+
+        end
+    })
+
+    ]]
+
+    ---
+
+    --[[
+
+    tabs.world:AddButton({
+        Title = "Open Strength Doors",
+        Description = "Unlock all of the doors that require max strength.",
         Callback = function()
 
         end
