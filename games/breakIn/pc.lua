@@ -95,11 +95,24 @@ local function equip(tool, safe)
 end
 
 local function heal(player)
+    local function self()
+        give("Gold Pizza")
+        equip("GoldPizza", false)
+
+        events:WaitForChild("CurePlayer"):FireServer(localPlayer, localPlayer)    
+    end
+
     if (player) == string.lower("all") then
         give("GoldenApple")
         equip("GoldenApple", false)
 
         events:WaitForChild("HealTheNoobs"):FireServer()
+    elseif (player) == localPlayer.Name or (player) == "me" then
+        for i = 1, 2 do
+            self()
+        end
+    elseif string.find("god", player) then
+        self()
     end
 end
 
@@ -297,8 +310,6 @@ end
 -- player tab
 
 do
-    --[[
-
     tabs.player:AddButton({
         Title = "Heal",
         Description = "Bring yourself back to full health.",
@@ -311,7 +322,7 @@ do
 
     local godmode = tabs.player:AddToggle("Godmode", {
         Title = "Godmode",
-        Description = "Scuffed godmode, fixing soon.",
+        Description = "Automatically heal yourself when below 50 HP.",
         Default = false
     })
 
@@ -324,8 +335,6 @@ do
             heal(localPlayer.Name)
         end
     end)
-
-    ]]
 
     ---
 
