@@ -147,7 +147,7 @@ local window = flu:CreateWindow({
     SubTitle = "github.com/hello-n-bye/Starry",
     TabWidth = 160,
     Size = UDim2.fromOffset(625, 460 / 1.5),
-    Acrylic = true,
+    Acrylic = false,
     Theme = "Darker",
     MinimizeKey = Enum.KeyCode.LeftControl
 })
