@@ -1,6 +1,6 @@
 local flu = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
 
-local BETA = false
+local BETA = true
 
 if not (BETA) then
     if (getgenv().starry) then
@@ -71,15 +71,35 @@ local function train(method)
     events:WaitForChild("RainbowWhatStat"):FireServer(method)
 end
 
-local function heal(player)
-
-end
-
 local function give(item)
     if (item) == "Armor" then
         events:WaitForChild("Vending"):FireServer(3, "Armor2", "Armor", tostring(localPlayer), 1)
     else
         events:WaitForChild("GiveTool"):FireServer(tostring(item:gsub(" ", "")))
+    end
+end
+
+local function pause(seconds)
+    task.wait(seconds or 0)
+end
+
+local function equip(tool, safe)
+    if (safe) or (safe) == true then
+        -- safer method; allows for player interactions
+    else
+        -- don't allow for player interaction
+        -- literally just insert into character model itself
+
+        backpack:WaitForChild(tool).Parent = character
+    end
+end
+
+local function heal(player)
+    if (player) == string.lower("all") then
+        give("GoldenApple")
+        equip("GoldenApple", false)
+
+        events:WaitForChild("HealTheNoobs"):FireServer()
     end
 end
 
@@ -122,10 +142,6 @@ local function get()
     elseif (book) then
         return "The Nerd"
     end
-end
-
-local function equip()
-
 end
 
 local function pickup()
@@ -420,11 +436,11 @@ do
                     oldPos_Farming = rootPart.CFrame
                 end
 
-                task.wait(0.35)
+                pause(0.35)
     
                 tween(CFrame.new(-259.504608, 60.9477654, -745.243408, -0.999818861, 7.66576136e-08, 0.0190321952, 7.65230581e-08, 1, -7.79803688e-09, -0.0190321952, -6.34022257e-09, -0.999818861))
     
-                task.wait(0.8)
+                pause(0.8)
                 
                 while (farmer) do
                     equip()
@@ -456,7 +472,7 @@ do
                 end
             else
                 if (oldPos_Farming) ~= nil then
-                    task.wait(0.8)
+                    pause(0.8)
     
                     tween(oldPos_Farming)
                     oldPos_Farming = nil
@@ -497,28 +513,28 @@ do
 
                         give(tostring(v.Name:gsub("Circle", "")))
 
-                        task.wait(0.1)
+                        pause(0.1)
                         localPlayer.Backpack:WaitForChild(tostring(v.Name:gsub("Circle", ""))).Parent = character
 
                         to(CFrame.new(-257.56839, 29.4499969, -910.452637, -0.238445505, 7.71292363e-09, 0.971155882, 1.2913591e-10, 1, -7.91029819e-09, -0.971155882, -1.76076387e-09, -0.238445505))
-                        task.wait(0.5)
+                        pause(0.5)
 
                         events:WaitForChild("CatFed"):FireServer(tostring(v.Name:gsub("Circle", "")))
                     end
                 end
 
-                task.wait(2)    
+                pause(2)    
 
                 for _ = 1, 3 do
                     to(CFrame.new(-203.533081, 30.4500484, -790.901428, -0.0148558766, 8.85941187e-09, -0.999889672, 2.65695732e-08, 1, 8.46563175e-09, 0.999889672, -2.64408779e-08, -0.0148558766) + Vector3.new(0, 5, 0))
-                    task.wait(.1)
+                    pause(.1)
                 end
             end
     
             local function agent()
                 give("Louise")
 
-                task.wait(.1)
+                pause(.1)
                 localPlayer.Backpack:WaitForChild("Louise").Parent = character
 
                 events:WaitForChild("LouiseGive"):FireServer(2)
@@ -527,7 +543,7 @@ do
             local function uncle()
                 give("Key")
 
-                task.wait(.1)
+                pause(.1)
                 localPlayer.Backpack:WaitForChild("Key").Parent = character
 
                 wait(.5)
@@ -536,10 +552,10 @@ do
             
             uncle()
 
-            task.wait(3)
+            pause(3)
             doggy()
 
-            task.wait(3); agent()
+            pause(3); agent()
         end
     })
 
@@ -658,12 +674,22 @@ end
 
 do
     tabs.stats:AddButton({
+        Title = "Heal All",
+        Description = "Heal the entire server instantaneously.",
+        Callback = function()
+            heal("all")
+        end
+    })
+
+    ---
+
+    tabs.stats:AddButton({
         Title = "Max Speed",
         Description = "Gain the maximum amount of speed buffs.",
         Callback = function()
             local i = 0
 
-            while task.wait(1) do
+            while pause(1) do
                 i = i + 1
         
                 if (i) ~= 5 then
@@ -687,7 +713,7 @@ do
         Callback = function()
             local i = 0
 
-            while task.wait(1) do
+            while pause(1) do
                 i = i + 1
         
                 if (i) ~= 5 then
