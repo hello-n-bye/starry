@@ -1,6 +1,6 @@
 local flu = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
 
-local BETA = true
+local BETA = false
 
 if not (BETA) then
     if (getgenv().starry) then
@@ -79,24 +79,8 @@ local function give(item)
     end
 end
 
-local function checkTool()
-    local tools = {"Hammer", "Pitchfork", "Broom", "Bat", "Crowbar3", "Crowbar2"}
-
-    for _,v in ipairs(tools) do
-        local tool = backpack:FindFirstChild(v)
-
-        if (tool) then
-            return v
-        end
-    end
-end
-
 local function pause(seconds)
-    if (seconds) == nil or not (seconds) then
-        seconds = 0
-    end
-
-    task.wait(seconds)
+    task.wait(seconds or 0)
 end
 
 local function equip(tool, safe)
@@ -111,24 +95,11 @@ local function equip(tool, safe)
 end
 
 local function heal(player)
-    local function self()
-        give("Gold Pizza")
-        equip("GoldPizza", false)
-
-        events:WaitForChild("CurePlayer"):FireServer(localPlayer, localPlayer)    
-    end
-
     if (player) == string.lower("all") then
         give("GoldenApple")
         equip("GoldenApple", false)
 
         events:WaitForChild("HealTheNoobs"):FireServer()
-    elseif (player) == localPlayer.Name or (player) == "me" then
-        for i = 1, 2 do
-            self()
-        end
-    elseif string.find("god", player) then
-        self()
     end
 end
 
@@ -191,7 +162,7 @@ local window = flu:CreateWindow({
     Title = "Starry 💫",
     SubTitle = "github.com/hello-n-bye/Starry",
     TabWidth = 160,
-    Size = UDim2.fromOffset(625, 460),
+    Size = UDim2.fromOffset(625, 460 / 1.5),
     Acrylic = false,
     Theme = "Darker",
     MinimizeKey = Enum.KeyCode.LeftControl
@@ -326,6 +297,8 @@ end
 -- player tab
 
 do
+    --[[
+
     tabs.player:AddButton({
         Title = "Heal",
         Description = "Bring yourself back to full health.",
@@ -336,11 +309,9 @@ do
 
     ---
 
-    --[[
-
     local godmode = tabs.player:AddToggle("Godmode", {
         Title = "Godmode",
-        Description = "Automatically heal yourself when below 50 HP.",
+        Description = "Scuffed godmode, fixing soon.",
         Default = false
     })
 
@@ -350,7 +321,7 @@ do
         while (godded) do
             run.Stepped:Wait()
 
-            heal("god")
+            heal(localPlayer.Name)
         end
     end)
 
@@ -448,8 +419,6 @@ end
 do
     local remaining = house:FindFirstChild("BreakRoom"):FindFirstChild("Board"):FindFirstChild("Part1"):FindFirstChild("SurfaceGui"):FindFirstChild("HowMany")
 
-    --[[
-
     local autofarm = tabs.combat:AddToggle("Auto farm", {
         Title = "Auto Farm",
         Description = "Automatically kill bad guys!",
@@ -462,63 +431,45 @@ do
         farmer = value
 
         if (value) then
-            --[[
-
             if (remaining.Text) ~= "0" then
-                xpcall(function()
-                    if not (oldPos_Farming) then
-                        oldPos_Farming = rootPart.CFrame
+                if not (oldPos_Farming) then
+                    oldPos_Farming = rootPart.CFrame
+                end
+
+                pause(0.35)
+    
+                tween(CFrame.new(-259.504608, 60.9477654, -745.243408, -0.999818861, 7.66576136e-08, 0.0190321952, 7.65230581e-08, 1, -7.79803688e-09, -0.0190321952, -6.34022257e-09, -0.999818861))
+    
+                pause(0.8)
+                
+                while (farmer) do
+                    equip()
+    
+                    if (get() == "The Nerd") or (get() == "The Hyper") or (get() == "The Sporty") then
+                        tween(combatZone.CFrame + Vector3.new(0, 2.4, 0))
+                    else
+                        tween(combatZone.CFrame + Vector3.new(0, 3.78, 0))
                     end
     
-                    pause(0.35)
-        
-                    tween(CFrame.new(-259.504608, 60.9477654, -745.243408, -0.999818861, 7.66576136e-08, 0.0190321952, 7.65230581e-08, 1, -7.79803688e-09, -0.0190321952, -6.34022257e-09, -0.999818861))
-        
-                    pause(0.8)
-                    
-                    while (farmer) do
-                        local j = checkTool()
-                        local l = get()
-                        
-                        -- {"Hammer", "Pitchfork", "Broom", "Bat", "Crowbar3", "Crowbar2"}
+                    if (badGuys) then
+                        for _,v in ipairs(badGuys:GetChildren()) do
+                            local newRoot = v:FindFirstChild("HumanoidRootPart")
+                            if (newRoot) then
+                                if not (newRoot:FindFirstChild("ForceField")) then
+                                    virtualUser:CaptureController()
+                                    virtualUser:ClickButton1(Vector2.new(-999, -999))
+                                end
     
-                        print("1")
-                        equip("Hammer", false)
-        
-                        if (l == "The Nerd") or (l == "The Hyper") or (l == "The Sporty") then
-                            tween(combatZone.CFrame + Vector3.new(0, 2.4, 0))
-                        else
-                            tween(combatZone.CFrame + Vector3.new(0, 3.78, 0))
-                        end
-                        print("2")
-        
-                        if (badGuys) then
-                            print("3")
-                            for _,v in ipairs(badGuys:GetChildren()) do
-                                print("4")
-                                local newRoot = v:FindFirstChild("HumanoidRootPart")
-                                if (newRoot) then
-                                    print("5")
-                                    if not (newRoot:FindFirstChild("ForceField")) then
-                                        virtualUser:CaptureController()
-                                        virtualUser:ClickButton1(Vector2.new(-999, -999))
-                                    end
-                                    print("6")
-        
-                                    if (l == "The Nerd") or (l == "The Hyper") or (l == "The Sporty") then
-                                        newRoot.CFrame = CFrame.new(rootPart.Position + Vector3.new(0, 5, 0))
-                                    else
-                                        newRoot.CFrame = CFrame.new(rootPart.Position + Vector3.new(0, 6, 0))
-                                    end
-                                    print("7")
+                                if (get() == "The Nerd") or (get() == "The Hyper") or (get() == "The Sporty") then
+                                    newRoot.CFrame = CFrame.new(rootPart.Position + Vector3.new(0, 5, 0))
+                                else
+                                    newRoot.CFrame = CFrame.new(rootPart.Position + Vector3.new(0, 6, 0))
                                 end
                             end
                         end
-                        run.Stepped:Wait()
                     end
-                end, function(err)
-                    notify("A Problem Occured", err)
-                end)
+                    run.Stepped:Wait()
+                end
             else
                 if (oldPos_Farming) ~= nil then
                     pause(0.8)
@@ -527,14 +478,8 @@ do
                     oldPos_Farming = nil
                 end
             end
-
-            ]]
-
-            --> Remake this tomorrow!
-    --    end
-    --end)
-
-    --]]
+        end
+    end)
 
     ---
 
@@ -561,8 +506,6 @@ do
         Description = "Harvest the NPCs and take them back to their prison.",
         Callback = function()
             notify("Fetching NPCs...", "This process takes about 6 seconds.")
-
-            local old = rootPart.CFrame
 
             local function doggy()
                 for _,v in pairs(localPlayer.PlayerGui.Assets.Note.Note.Note:GetChildren()) do
@@ -613,10 +556,6 @@ do
             doggy()
 
             pause(3); agent()
-
-            pause(3)
-
-            tween(old)
         end
     })
 
@@ -750,7 +689,7 @@ do
         Callback = function()
             local i = 0
 
-            while (task.wait(1)) do
+            while pause(1) do
                 i = i + 1
         
                 if (i) ~= 5 then
@@ -774,7 +713,7 @@ do
         Callback = function()
             local i = 0
 
-            while (task.wait(1)) do
+            while pause(1) do
                 i = i + 1
         
                 if (i) ~= 5 then
@@ -815,22 +754,6 @@ do
 
         end
     })
-
-    ]]
-
-    ---
-
-    --[[
-
-    local bobbing = tabs.anims:AddToggle("Camera Bobbing Switch", {
-        Title = "Disable Camera Bobbing",
-        Description = "Remove the dumb camera shaking when things happen.",
-        Default = false
-    })
-
-    bobbing:OnChanged(function(value)
-        --
-    end)
 
     ]]
 end

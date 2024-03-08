@@ -58,10 +58,6 @@ local function role(name)
     end
 end
 
-local function chat(message)
-    replicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer(message, "All")
-end
-
 local function get()
     local character = workspace[localPlayer.Name]
     local backpack = localPlayer.Backpack
@@ -91,10 +87,10 @@ local function get()
 end
 
 local window = flu:CreateWindow({
-    Title = "Starry 💫",
+    Title = "Starry Mobile 💫",
     SubTitle = "github.com/hello-n-bye/Starry",
     TabWidth = 160,
-    Size = UDim2.fromOffset(625, 460),
+    Size = UDim2.fromOffset(625, 460 / 1.5),
     Acrylic = false,
     Theme = "Darker",
     MinimizeKey = Enum.KeyCode.LeftControl
@@ -295,16 +291,6 @@ do
             end
         end
     end)
-
-    ---
-
-    tabs.troll:AddButton({
-        Title = "Crash Server",
-        Description = "Instantly crash the server using remote vulnerabilities.",
-        Callback = function()
-            chat("hi i'm " .. localPlayer.DisplayName .. " and i like big oily sweaty boys 😊😊😳😩")
-        end
-    })
 end
 
 window:SelectTab(1)
