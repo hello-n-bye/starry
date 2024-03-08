@@ -1,6 +1,6 @@
 local flu = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
 
-local BETA = true
+local BETA = false
 
 if not (BETA) then
     if (getgenv().starry) then
