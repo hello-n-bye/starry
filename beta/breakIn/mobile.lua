@@ -1,6 +1,6 @@
 local flu = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
 
-local BETA = true
+local BETA = false
 
 if not (BETA) then
     if (getgenv().starry) then
@@ -43,6 +43,8 @@ local humanoid = character.Humanoid or character:WaitForChild("Humanoid")
 
 local events = replicatedStorage:WaitForChild("Events")
 
+local onTable = workspace:WaitForChild("OnTable")
+
 local combatZone = game:GetService("Workspace"):FindFirstChild("EvilArea"):FindFirstChild("Rug"):FindFirstChild("PartTex")
 
 local vending = replicatedStorage.Vending
@@ -51,13 +53,13 @@ local godded = false
 local noslip = false
 local farmer = false
 
-local badGuys = workspace:FindFirstChild("BadGuys")
+local badGuys = workspace:WaitForChild("BadGuys")
 local oldPos_Farming = nil
 
 local backpack = localPlayer.Backpack
 
-local house = workspace:FindFirstChild("TheHouse")
-local hidden = workspace:FindFirstChild("Hidden")
+local house = workspace:WaitForChild("TheHouse")
+local hidden = workspace:WaitForChild("Hidden")
 
 if not (lighting:FindFirstChild("STARRY_REMOTE_STORAGE")) then
     local newFolder = Instance.new("Folder", lighting) do
@@ -65,7 +67,28 @@ if not (lighting:FindFirstChild("STARRY_REMOTE_STORAGE")) then
     end
 end
 
-local contain = lighting:FindFirstChild("STARRY_REMOTE_STORAGE")
+local function find(string)
+    if not (string) then
+        return
+    end
+
+    local saved = {}
+
+    for _,v in ipairs(players:GetPlayers()) do
+        if (string.lower(v.Name):match(string.lower(string))) or (string.lower(v.DisplayName):match(string.lower(string))) then
+            table.insert(saved, v)
+        end
+    end
+
+    if (#saved) > (0) then
+        print(type(saved[1]))
+        return saved[1]
+    elseif (#saved) < (1) then
+        return nil
+    end
+end
+
+local contain = lighting:WaitForChild("STARRY_REMOTE_STORAGE")
 
 local function train(method)
     events:WaitForChild("RainbowWhatStat"):FireServer(method)
@@ -79,13 +102,25 @@ local function give(item)
     end
 end
 
-local function pause(seconds)
-    task.wait(seconds or 0)
+local function checkTool()
+    local tools = {"Hammer", "Pitchfork", "Broom", "Bat", "Crowbar3", "Crowbar2"}
+
+    for _,v in ipairs(tools) do
+        local tool = backpack:FindFirstChild(v)
+
+        if tool then
+            return v
+        end
+    end
+
+    return false
 end
 
 local function equip(tool, safe)
     if (safe) or (safe) == true then
         -- safer method; allows for player interactions
+
+        humanoid:EquipTool(tool)
     else
         -- don't allow for player interaction
         -- literally just insert into character model itself
@@ -95,11 +130,24 @@ local function equip(tool, safe)
 end
 
 local function heal(player)
+    local function self()
+        give("Gold Pizza")
+        equip("GoldPizza", false)
+
+        events:WaitForChild("CurePlayer"):FireServer(localPlayer, localPlayer)    
+    end
+
     if (player) == string.lower("all") then
         give("GoldenApple")
         equip("GoldenApple", false)
 
         events:WaitForChild("HealTheNoobs"):FireServer()
+    elseif (player) == localPlayer.Name or (player) == "me" then
+        for i = 1, 2 do
+            self()
+        end
+    elseif string.find("god", player) then
+        self()
     end
 end
 
@@ -154,6 +202,16 @@ local function pickup()
     end
 end
 
+local function remove(instance)
+    -- written by QuePro, check out https://www.babft.org/discord
+
+    xpcall(function()
+        events:WaitForChild("OnDoorHit"):FireServer(instance)
+    end, function(err)
+        warn("💫 Starry Debugger: " .. err)
+    end)
+end
+
 local presets = {
     ['walkspeed'] = 16,
 }
@@ -162,7 +220,7 @@ local window = flu:CreateWindow({
     Title = "Starry 💫",
     SubTitle = "github.com/hello-n-bye/Starry",
     TabWidth = 160,
-    Size = UDim2.fromOffset(625, 460 / 1.5),
+    Size = UDim2.fromOffset(625, 546 / 1.5),
     Acrylic = false,
     Theme = "Darker",
     MinimizeKey = Enum.KeyCode.LeftControl
@@ -205,6 +263,14 @@ local tabs = {
         Title = " Fun",
         Icon = "banana"
     }),
+    trolling = window:AddTab({
+        Title = " Troll",
+        Icon = "skull"
+    }),
+    server = window:AddTab({
+        Title = " Server",
+        Icon = "cloud"
+    })
 }
 
 local function notify(head, content)
@@ -297,8 +363,6 @@ end
 -- player tab
 
 do
-    --[[
-
     tabs.player:AddButton({
         Title = "Heal",
         Description = "Bring yourself back to full health.",
@@ -311,7 +375,7 @@ do
 
     local godmode = tabs.player:AddToggle("Godmode", {
         Title = "Godmode",
-        Description = "Scuffed godmode, fixing soon.",
+        Description = "You're unable to kill or use tools when enabled.",
         Default = false
     })
 
@@ -321,11 +385,23 @@ do
         while (godded) do
             run.Stepped:Wait()
 
-            heal(localPlayer.Name)
+            humanoid:UnequipTools()
+
+            local label = localPlayer:WaitForChild("PlayerGui"):FindFirstChild("EnergyBar"):FindFirstChild("EnergyBar"):FindFirstChild("EnergyBar"):FindFirstChild("ImageLabel"):FindFirstChild("NumberHolder"):FindFirstChild("TextLabel")
+            local max = "200/200"
+
+            local before = string.match(label.Text, "(%d+)/")
+
+            if (tonumber(before)) < 200 then
+                if not (hasEaten) then
+                    heal("me")
+                    hasEaten = true
+                end
+            else
+                hasEaten = false
+            end
         end
     end)
-
-    ]]
 
     ---
 
@@ -417,71 +493,7 @@ end
 -- combat
 
 do
-    local remaining = house:FindFirstChild("BreakRoom"):FindFirstChild("Board"):FindFirstChild("Part1"):FindFirstChild("SurfaceGui"):FindFirstChild("HowMany")
-
-    local autofarm = tabs.combat:AddToggle("Auto farm", {
-        Title = "Auto Farm",
-        Description = "Automatically kill bad guys!",
-        Default = false
-    })
-
-    autofarm:OnChanged(function(value)
-        -- Autofarm written by Headlined. (@headlined or headlined#0 on Discord)
-
-        farmer = value
-
-        if (value) then
-            if (remaining.Text) ~= "0" then
-                if not (oldPos_Farming) then
-                    oldPos_Farming = rootPart.CFrame
-                end
-
-                pause(0.35)
-    
-                tween(CFrame.new(-259.504608, 60.9477654, -745.243408, -0.999818861, 7.66576136e-08, 0.0190321952, 7.65230581e-08, 1, -7.79803688e-09, -0.0190321952, -6.34022257e-09, -0.999818861))
-    
-                pause(0.8)
-                
-                while (farmer) do
-                    equip()
-    
-                    if (get() == "The Nerd") or (get() == "The Hyper") or (get() == "The Sporty") then
-                        tween(combatZone.CFrame + Vector3.new(0, 2.4, 0))
-                    else
-                        tween(combatZone.CFrame + Vector3.new(0, 3.78, 0))
-                    end
-    
-                    if (badGuys) then
-                        for _,v in ipairs(badGuys:GetChildren()) do
-                            local newRoot = v:FindFirstChild("HumanoidRootPart")
-                            if (newRoot) then
-                                if not (newRoot:FindFirstChild("ForceField")) then
-                                    virtualUser:CaptureController()
-                                    virtualUser:ClickButton1(Vector2.new(-999, -999))
-                                end
-    
-                                if (get() == "The Nerd") or (get() == "The Hyper") or (get() == "The Sporty") then
-                                    newRoot.CFrame = CFrame.new(rootPart.Position + Vector3.new(0, 5, 0))
-                                else
-                                    newRoot.CFrame = CFrame.new(rootPart.Position + Vector3.new(0, 6, 0))
-                                end
-                            end
-                        end
-                    end
-                    run.Stepped:Wait()
-                end
-            else
-                if (oldPos_Farming) ~= nil then
-                    pause(0.8)
-    
-                    tween(oldPos_Farming)
-                    oldPos_Farming = nil
-                end
-            end
-        end
-    end)
-
-    ---
+    local remaining = house:WaitForChild("BreakRoom"):FindFirstChild("Board"):FindFirstChild("Part1"):FindFirstChild("SurfaceGui"):FindFirstChild("HowMany")
 
     tabs.combat:AddParagraph({
         Title = remaining.Text .. " Enemies Remaining"
@@ -496,6 +508,93 @@ do
             end
         end
     end)
+
+    ---
+
+    local autofarm = tabs.combat:AddToggle("Auto farm", {
+        Title = "Auto Farm",
+        Description = "Automatically kill bad guys!",
+        Default = false
+    })
+
+    autofarm:OnChanged(function(value)
+        -- autofarm written by Headlined. (@headlined or headlined#0 on Discord)
+
+        farmer = value
+
+        if (value) then
+            events:WaitForChild("Vending"):FireServer(3, "Bat", "Weapons", localPlayer.Name, 0)
+            
+            task.wait(0.25)
+            
+            equip(checkTool(), false)
+
+            if not (oldPos_Farming) then
+                oldPos_Farming = rootPart.CFrame
+            end
+    
+            tween(CFrame.new(-259.504608, 60.9477654, -745.243408, -0.999818861, 7.66576136e-08, 0.0190321952, 7.65230581e-08, 1, -7.79803688e-09, -0.0190321952, -6.34022257e-09, -0.999818861))
+    
+            task.wait(0.8)
+    
+            while (farmer) do
+                if (get() == "The Nerd") or (get() == "The Hyper") or (get() == "The Sporty") then
+                    tween(combatZone.CFrame + Vector3.new(0, 2.4, 0))
+                else
+                    tween(combatZone.CFrame + Vector3.new(0, 3.78, 0))
+                end
+    
+                if (badGuys) then
+                    for _,v in ipairs(badGuys:GetChildren()) do
+                        local newRoot = v:FindFirstChild("HumanoidRootPart")
+                        if (newRoot) then
+                            if (v:FindFirstChild("ForceField")) then
+                                remove(v.ForceField)
+                            else
+                                virtualUser:CaptureController()
+                                virtualUser:ClickButton1(Vector2.new(-999, -999))
+                            end
+
+                            if (get() == "The Nerd") or (get() == "The Hyper") or (get() == "The Sporty") then
+                                newRoot.CFrame = CFrame.new(rootPart.Position + Vector3.new(0, 5, 0))
+                            else
+                                newRoot.CFrame = CFrame.new(rootPart.Position + Vector3.new(0, 6, 0))
+                            end
+                        end
+                    end
+                end
+                
+                run.Stepped:Wait()
+            end
+        else
+            if (oldPos_Farming) == nil then
+                warn("💫 Starry Debugger: Something went wrong in autofarming!")
+            else
+                -- found by imanewma__n because i was too lazy
+                humanoid:UnequipTools()
+
+                task.wait(0.5)
+    
+                tween(oldPos_Farming)
+                oldPos_Farming = nil
+            end
+        end
+    end)
+
+    ---
+
+    tabs.combat:AddButton({
+        Title = "End Wave",
+        Description = "Literally kill off their species.",
+        Callback = function()
+            local waveGuys = workspace:FindFirstChild("BadGuysFront"):GetChildren()
+            for _,v in ipairs(waveGuys) do
+                if (v:FindFirstChild("HumanoidRootPart")) then
+                    remove(v)
+                end
+            end
+        end
+    })
 end
 
 -- utils
@@ -507,34 +606,36 @@ do
         Callback = function()
             notify("Fetching NPCs...", "This process takes about 6 seconds.")
 
+            local old = rootPart.CFrame
+
             local function doggy()
-                for _,v in pairs(localPlayer.PlayerGui.Assets.Note.Note.Note:GetChildren()) do
+                for _,v in pairs(localPlayer.PlayerGui.Assets:FindFirstChild("Note"):FindFirstChild("Note"):FindFirstChild("Note"):GetChildren()) do
                     if (v.Name:match("Circle")) and (v.Visible == true) then
 
                         give(tostring(v.Name:gsub("Circle", "")))
 
-                        pause(0.1)
+                        task.wait(0.1)
                         localPlayer.Backpack:WaitForChild(tostring(v.Name:gsub("Circle", ""))).Parent = character
 
                         to(CFrame.new(-257.56839, 29.4499969, -910.452637, -0.238445505, 7.71292363e-09, 0.971155882, 1.2913591e-10, 1, -7.91029819e-09, -0.971155882, -1.76076387e-09, -0.238445505))
-                        pause(0.5)
+                        task.wait(0.5)
 
                         events:WaitForChild("CatFed"):FireServer(tostring(v.Name:gsub("Circle", "")))
                     end
                 end
 
-                pause(2)    
+                task.wait(2)    
 
                 for _ = 1, 3 do
                     to(CFrame.new(-203.533081, 30.4500484, -790.901428, -0.0148558766, 8.85941187e-09, -0.999889672, 2.65695732e-08, 1, 8.46563175e-09, 0.999889672, -2.64408779e-08, -0.0148558766) + Vector3.new(0, 5, 0))
-                    pause(.1)
+                    task.wait(.1)
                 end
             end
     
             local function agent()
                 give("Louise")
 
-                pause(.1)
+                task.wait(.1)
                 localPlayer.Backpack:WaitForChild("Louise").Parent = character
 
                 events:WaitForChild("LouiseGive"):FireServer(2)
@@ -543,7 +644,7 @@ do
             local function uncle()
                 give("Key")
 
-                pause(.1)
+                task.wait(.1)
                 localPlayer.Backpack:WaitForChild("Key").Parent = character
 
                 wait(.5)
@@ -552,10 +653,23 @@ do
             
             uncle()
 
-            pause(3)
+            task.wait(3)
             doggy()
 
-            pause(3); agent()
+            task.wait(3); agent()
+
+            task.wait(3)
+
+            tween(old)
+        end
+    })
+
+    ---
+
+    tabs.utils:AddButton({
+        Title = "Give Strongest Tool",
+        Callback = function()
+            events:WaitForChild("Vending"):FireServer(3, localPlayer:WaitForChild("PlayerGui"):FindFirstChild("Phone"):FindFirstChild("Phone"):FindFirstChild("Phone"):FindFirstChild("Background"):FindFirstChild("InfoScreen"):FindFirstChild("WeaponInfo"):FindFirstChild("TwadoWants").Text, "Weapons", localPlayer.Name, 0)
         end
     })
 
@@ -577,28 +691,7 @@ do
     })
 
     weapons:OnChanged(function(value)
-        local arg = {
-            [1] = 3,
-            [2] = value,
-            [3] = "Weapons",
-            [4] = localPlayer.Name,
-            [6] = 0
-        }
-
-        events:WaitForChild("Vending"):FireServer(unpack(arg))
-    end)
-
-    ---
-
-    local items = tabs.utils:AddDropdown("Give Items", {
-        Title = "Give Items",
-        Values = {"Gold Pizza"},
-        Mutli = false,
-        Default = "Select One"
-    })
-
-    items:OnChanged(function(value)
-        give(value)
+        events:WaitForChild("Vending"):FireServer(3, value, "Weapons", localPlayer.Name, 0)
     end)
 
     ---
@@ -687,14 +780,8 @@ do
         Title = "Max Speed",
         Description = "Gain the maximum amount of speed buffs.",
         Callback = function()
-            local i = 0
-
-            while pause(1) do
-                i = i + 1
-        
-                if (i) ~= 5 then
-                    train("Speed")
-                end
+            for i = 1, 10 do
+                train("Speed")
             end
         end
     })
@@ -711,14 +798,8 @@ do
         Title = "Max Strength",
         Description = "Automatically gain the maximum amount of strength buffs.",
         Callback = function()
-            local i = 0
-
-            while pause(1) do
-                i = i + 1
-        
-                if (i) ~= 5 then
-                    train("Strength")
-                end
+            for i = 1, 10 do
+                train("Strength")
             end
         end
     })
@@ -756,6 +837,22 @@ do
     })
 
     ]]
+
+    ---
+
+    --[[
+
+    local bobbing = tabs.anims:AddToggle("Camera Bobbing Switch", {
+        Title = "Disable Camera Bobbing",
+        Description = "Remove the dumb camera shaking when things happen.",
+        Default = false
+    })
+
+    bobbing:OnChanged(function(value)
+        --
+    end)
+
+    ]]
 end
 
 -- money tab
@@ -786,22 +883,6 @@ do
             pickup()
         end
     end)
-
-    --[[
-
-    tabs.money:AddButton({
-        Title = "Snatch Hidden Money",
-        Description = "Get all of the money from drawers or other secret places.",
-        Callback = function()
-            for _, v in ipairs(hidden:GetChildren()) do
-                if (v.Name) == "Money" then
-                    fireclickdetector(v.ClickDetector, 0)
-                end
-            end
-        end
-    })
-
-    ]]
 end
 
 -- world tab
@@ -811,7 +892,7 @@ do
         Title = "Map Teleports",
         Values = {"Base", "Middle Room", "Combat", "Evil Enterance", "Gym", "Vault", "Kitchen", "Attic", "Shop", "Bridge", "Spawn", "Electrical", "Rainbow Pizza", "Boss Zone", "Boss Rock", "Main Stage", "Lantern"},
         Multi = false,
-        Default = "Select One",
+        Default = "Select One"
     })
 
     tps:OnChanged(function(value)
@@ -866,15 +947,23 @@ do
 
     ---
 
-    --[[
-
     tabs.world:AddButton({
         Title = "Tear Pages",
         Description = "Tear the pages off, leading to instructions of the dog.",
         Callback = function()
+            for _,v in ipairs(house:FindFirstChild("PosterDog"):GetChildren()) do
+                if (string.find(v.Name, "Page")) then
+                    remove(v)
 
+                    localPlayer:WaitForChild("PlayerGui"):FindFirstChild("Assets"):FindFirstChild("Note"):FindFirstChild("Note"):FindFirstChild("Note").Visible = true
+                else
+                    localPlayer:WaitForChild("PlayerGui"):FindFirstChild("Assets"):FindFirstChild("Note"):FindFirstChild("Note"):FindFirstChild("Note").Visible = true
+                end
+            end
         end
     })
+
+    --[[
 
     tabs.world:AddButton({
         Title = "Solve Timeline",
@@ -898,12 +987,29 @@ do
             local metallic = house:FindFirstChild("MetalBitBreakRoom")
 
             if (metallic) and (door2) and (door1) then 
-                metallic:Destroy()
-                door1:Destroy()
-
-                door2:Destroy()
+                remove(metallic)
+                remove(door2)
+                remove(door1)
             end
         end
+    })
+
+    ---
+
+    local function combined(text)
+        local result = text:gsub("(%l)(%u)", "%1 %2")
+
+        return result
+    end
+
+    local formattedDog = combined(localPlayer:WaitForChild("PlayerGui"):FindFirstChild("Phone"):FindFirstChild("Phone"):FindFirstChild("Phone"):FindFirstChild("Background"):FindFirstChild("InfoScreen"):FindFirstChild("DogInfo"):FindFirstChild("TwadoWants").Text)
+
+    tabs.world:AddParagraph({
+        Title = "Twado Requires " .. formattedDog
+    })
+
+    tabs.world:AddParagraph({
+        Title = "Strongest Weapon is the " .. localPlayer:WaitForChild("PlayerGui"):FindFirstChild("Phone"):FindFirstChild("Phone"):FindFirstChild("Phone"):FindFirstChild("Background"):FindFirstChild("InfoScreen"):FindFirstChild("WeaponInfo"):FindFirstChild("TwadoWants").Text
     })
 end
 
@@ -926,6 +1032,121 @@ do
             else
                 events:WaitForChild("IceSlip"):FireServer(Vector3.new(-184.6158447265625, 42.0324821472168, -777.117431640625))
             end
+        end
+    })
+
+    tabs.fun:AddButton({
+        Title = "Trigger Twado",
+        Description = "Make him go boing! There's a ~10 second cooldown.",
+        Callback = function()
+            -- events.Energy:FireServer("Cat")
+            fireclickdetector(house:FindFirstChild("SmallCat").ClickDetector)
+        end
+    })
+end
+
+-- trolling tab
+
+do
+    local crasher = tabs.trolling:AddButton({
+        Title = "Crash Server",
+        Description = "Literally just break the game to the point where it unalives itself.",
+        Callback = function()
+            for _,v in ipairs(players:GetPlayers()) do
+                if (v.Name) ~= localPlayer.Name then
+                    remove(v)
+                end
+            end
+
+            task.wait(4)
+
+            game:Shutdown()
+        end
+    })
+    ---
+
+    local kicker = tabs.trolling:AddInput("Kick Player", {
+        Title = "Kick Player",
+        Default = "",
+        Placeholder = "Player Name",
+        Numeric = false,
+        Finished = true,
+        Callback = function(value)
+            local player = find(value)
+
+            if (#players:GetPlayers()) == 1 then
+                notify("Can't Kick", "You're all alone.. and you can't kick yourself.")
+            else
+                if (player) == localPlayer.Name or (player) == localPlayer.DisplayName then
+                    notify("Nice Try", "You can't kick yourself..")
+                else
+                    remove(players[tostring(player)])
+                end
+            end
+        end
+    })
+
+    tabs.trolling:AddButton({
+        Title = "Kick All",
+        Description = "Remove everyone else from the server.",
+        Callback = function()
+            if (#players:GetPlayers()) == 1 then
+                notify("Can't Kick", "You're all alone.. and you can't kick yourself.")
+            else
+                for _,v in ipairs(players:GetPlayers()) do
+                    if (v.Name) ~= localPlayer.Name then
+                        remove(v)
+                    end
+                end
+            end
+        end
+    })
+end
+
+-- server sided
+
+do
+    tabs.server:AddButton({
+        Title = "Remove House",
+        Description = "Literally just delete the house, for everyone!",
+        Callback = function()
+            for _,v in ipairs(house:GetChildren()) do
+                if (v:IsA("Model")) and (v.Name == "FloorLayer") then
+                    remove(v)
+                end
+            end
+        end
+    })
+
+    tabs.server:AddButton({
+        Title = "Remove Map",
+        Description = "This is permanent, just remove the world entirely.",
+        Callback = function()
+            for _,v in ipairs(workspace:GetChildren()) do
+                remove(v)
+            end
+        end
+    })
+
+    tabs.server:AddButton({
+        Title = "Delete TV",
+        Description = "Remove the TV for everyone, essentially breaking the game.",
+        Callback = function()
+            remove(house:FindFirstChild("Projector"))
+        end
+    })
+
+    tabs.server:AddButton({
+        Title = "Delete Treadmills",
+        Callback = function()
+            remove(workspace:FindFirstChild("Tredmills"))
+        end
+    })
+
+    tabs.server:AddButton({
+        Title = "Delete Weights",
+        Callback = function()
+            remove(workspace:FindFirstChild("BenchPresses"))
         end
     })
 end

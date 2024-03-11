@@ -169,8 +169,8 @@ do
     ---
 
     tabs.intro:AddParagraph({
-        Title = "30+ Features",
-        Content = "As of March 2nd, we've hit a milestone of 30+ working features."
+        Title = "50+ Features",
+        Content = "As of March 9th, we've hit a milestone of 50+ working features."
     })
 end
 
@@ -225,7 +225,7 @@ end
 do
     tabs.game:AddButton({
         Title = "Load in",
-        Description = "Get into a bus, then wait to be brought into game.",
+        Description = "Get into whatever bus is available.",
         Callback = function()
             local newChar = localPlayer.Character or localPlayer.CharacterAdded:Wait()
 
@@ -249,12 +249,22 @@ do
     })
 
     tabs.game:AddButton({
-        Title = "Join Break In 1",
-        Description = "Experience the first game!",
+        Title = "Ride Truck One",
+        Description = "Get seated inside of the first camp-truck.",
         Callback = function()
-            -- firetouchinterest(rootPart, portal, 1)
+            local newChar = localPlayer.Character or localPlayer.CharacterAdded:Wait()
 
-            teleport:Teleport(3851622790, localPlayer)
+            newChar.HumanoidRootPart.CFrame = CFrame.new(87.4349976, 7.86999941, 108.889984, 8.10623169e-05, 1, 8.10623169e-05, -8.10623169e-05, -8.10623169e-05, 1, 1, -8.10623169e-05, 8.10623169e-05)
+        end
+    })
+
+    tabs.game:AddButton({
+        Title = "Ride Truck Two",
+        Description = "Get seated inside of the.. other.. camp-truck.",
+        Callback = function()
+            local newChar = localPlayer.Character or localPlayer.CharacterAdded:Wait()
+
+            newChar.HumanoidRootPart.CFrame = CFrame.new(87.4349976, 7.86999941, 147.389984, 8.10623169e-05, 1, 8.10623169e-05, -8.10623169e-05, -8.10623169e-05, 1, 1, -8.10623169e-05, 8.10623169e-05)
         end
     })
 end

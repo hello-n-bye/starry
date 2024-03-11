@@ -165,8 +165,8 @@ do
     ---
 
     tabs.intro:AddParagraph({
-        Title = "30+ Features",
-        Content = "As of March 2nd, we've hit a milestone of 30+ working features."
+        Title = "50+ Features",
+        Content = "As of March 9th, we've hit a milestone of 50+ working features."
     })
 end
 
