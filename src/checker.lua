@@ -16,8 +16,4 @@ if (placeid) == 13864661000 or (placeid) == 13864667823 then
     else
         loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/hello-n-bye/starry/master/games/breakIn/" .. isMobile() ..".lua", true))()
     end
-else
-    print("💫 Starry: Game not found, loaded universal.")
-
-    return loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/hello-n-bye/starry/master/games/uni/" .. isMobile() ..".lua", true))()
 end
