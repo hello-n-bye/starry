@@ -28,7 +28,7 @@ local function randomize()
     local colors = metadata.colors
     local names = {}
 
-    for name,_ in ipairs(colors) do
+    for name,_ in pairs(colors) do
         table.insert(names, name)
     end
 
