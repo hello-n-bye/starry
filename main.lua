@@ -3,7 +3,7 @@ local flu = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/rel
 local succ, err = xpcall(function()
     loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/hello-n-bye/starry/master/src/checker.lua", true))()
 
-    print("Loaded, with 0 problems. ⭐")
+    print("💫 Starry Output: Loaded with 0 issues.")
 end, function(err)
     if (string.find(err, "404")) or (string.find(err, "attempt to call a nil value")) then
         flu:Notify({
