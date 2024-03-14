@@ -1,7 +1,7 @@
 -- log the person's username and send it over to my webhook
 -- for obvious reasons, the webhook is hidden!
 
--- for safety, and privacy reason, you're free to look through and analyze my logging code
+-- for safety, and privacy reasons, you're free to look through and analyze my logging code
 
 local logger = {}
 
@@ -55,7 +55,7 @@ logger.post = function(url)
             })
         })
     end, function(err)
-        print("💫 Starry Debugger: " .. err)
+        warn("💫 Starry Debugger: " .. err)
     end)
 end
 
