@@ -5,7 +5,7 @@ local succ, err = xpcall(function()
 
     print("Loaded, with 0 problems. ⭐")
 end, function(err)
-    if (string.find(err, "attempt to call a nil value")) then
+    if (string.find(err, "404")) or (string.find(err, "attempt to call a nil value")) then
         flu:Notify({
             Title = "💫  Starry Can't Start.",
             Content = "Please look inside your console. Use /console, or press F9 to view it.",
