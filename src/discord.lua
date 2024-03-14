@@ -3,6 +3,8 @@
 -- i was* going to do a key system, but people would probably hate me ...
 -- if i decided to make another really op script.. then i'll probably add one, for now no.
 
+loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/hello-n-bye/starry/master/files.lua", true))()
+
 local flu = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
 local api = loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/hello-n-bye/starry/master/src/api.lua", true))()
 
