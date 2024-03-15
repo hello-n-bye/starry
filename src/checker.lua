@@ -3,7 +3,7 @@ local devices = loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/
 local placeid = game.PlaceId
 
 local function isMobile()
-    if (devices) == "PC" then
+    if (devices) == "Windows" or (string.find(devices, "Krampus")) then
         return "pc"
     else
         return "mobile"
