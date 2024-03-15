@@ -8,8 +8,6 @@ loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/hello-n-bye/star
 local flu = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
 local api = loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/hello-n-bye/starry/master/src/api.lua", true))()
 
-api.notify("📢", "This Could Take a Second.", "Please wait for Starry to finish loading.", 3)
-
 local http = game:GetService("HttpService")
 
 local req = request or (fluxus and fluxus.request)
