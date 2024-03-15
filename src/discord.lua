@@ -8,6 +8,8 @@ loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/hello-n-bye/star
 local flu = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
 local api = loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/hello-n-bye/starry/master/src/api.lua", true))()
 
+api.notify("📢", "This Could Take a Second.", "Please wait for Starry to finish loading.", 3)
+
 local http = game:GetService("HttpService")
 
 local req = request or (fluxus and fluxus.request)
@@ -17,9 +19,9 @@ local function copy(string)
     if (board) then
         board(tostring(string))
 
-        api.notify("🎉", "Discord Link Copied.", "Feel free to join our small community!", 5)
+        --api.notify("🎉", "Discord Link Copied.", "Feel free to join our small community!", 5)
     else
-        api.notify("❌", "Discord Link Uncopyable.", "Your executor doesn't support clipboard copying.", 5)
+        --api.notify("❌", "Discord Link Uncopyable.", "Your executor doesn't support clipboard copying.", 5)
     end
 end
 
