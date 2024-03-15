@@ -10,6 +10,8 @@ local cryMyselfToSleep = false
 
 local api = loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/hello-n-bye/starry/master/src/api.lua", true))()
 
+api.notify("📢", "This Could Take a Second.", "Please wait for Starry to finish loading.", 3)
+
 local path = "Starry"
 
 if (isfolder(path)) then
