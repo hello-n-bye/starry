@@ -49,6 +49,7 @@ local function main()
     
         if (platform) then
             api.log("Connected with " .. platform)
+            return platform
         else
             api.warn("Failed to determine platform from user-agent. Defaulting to Mobile.")
             return "Android"
