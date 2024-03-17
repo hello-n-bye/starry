@@ -25,6 +25,7 @@ Check-out Starry, the best Break In 2 script on Roblox.
 * **Unlock Origin Ending**
 * **Kick All**
 * **Remove Map**
+* **Kill Aura**
 * And more!
   
 ## We Promise You a Good Time.
