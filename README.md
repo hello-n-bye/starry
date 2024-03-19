@@ -1,12 +1,15 @@
 # Official Release 🐋
 ```lua
-return (loadstring(game:HttpGetAsync("...", true))("Starry 💫"))
+return (loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/hello-n-bye/starry/master/main.lua", true))("Starry"))
 ```
 
 ---
 
-### Starry is Down! 💫
-> **This means, temporarily Starry is shut down, and under development.**
+### Starry Supports Lobby! 💫
+> This means Starry **only supports** the **lobby** of Break In 2.
+> Soon, you'll be able to experience the full experience of Break In 2.
+
+> **20 available features for the lobby.<br>80 unreleased features for the in-game section.**
 
 ---
 
