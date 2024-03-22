@@ -25,11 +25,11 @@ Check-out Starry, the best Break In 2 script on Roblox.
 * **Godmode**
 * **Instant Kill Enemies**
 * **Auto Farming**
-* **Unlock Origin Ending**
 * **Kick All**
 * **Remove Map**
 * **Kill Aura**
-* **Crash Server**
+* **Semi-Claim Player**
+> Introduces features like **Kill**, **Dehumanize**, **Nolimbs**, and more!.
 * **Auto Color Match Solver**
 * And more!
   
