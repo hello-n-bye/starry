@@ -1,75 +1,58 @@
--- attempt to join my discord server
+-- just a simplistic file system mechanism
 
--- i was* going to do a key system, but people would probably hate me ...
--- if i decided to make another really op script.. then i'll probably add one, for now no.
+-- i only made this for very little purposes, but if you do end up deleting the folders ->
+--      you will be asked to join the discord again!
 
-loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/hello-n-bye/starry/master/files.lua", true))()
+-- so that's fun.
 
-local flu = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
+
+local cryMyselfToSleep = false
+
 local api = loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/hello-n-bye/starry/master/src/api.lua", true))()
 
-local http = game:GetService("HttpService")
+local path = "Starry"
 
-local req = request or (fluxus and fluxus.request)
-local function copy(string)
-    local board = setclipboard or toclipboard
+if (isfolder(path)) then
+    if (cryMyselfToSleep) then
+        delfolder(path)
 
-    if (board) then
-        board(tostring(string))
+        api.log("Deleted parent folder!")
 
-        --api.notify("🎉", "Discord Link Copied.", "Feel free to join our small community!", 5)
+        local timed = tick()
+        makefolder(path)
+
+        api.log("Created new folder in ~" .. string.format("%.2f", tick() - timed) .. " seconds.")
     else
-        --api.notify("❌", "Discord Link Uncopyable.", "Your executor doesn't support clipboard copying.", 5)
+        api.log("Found and saved parent folder.")
     end
+else
+    local timed = tick()
+    makefolder(path)
+    api.log("Created parent folder in " .. string.format("%.2f", tick() - timed) .. " seconds.")
 end
 
-copy("https://discord.gg/8wz7SDtRUj")
+local iHateLife = path .. "//info.json"
 
-if (req) then
-    if (isfolder("Starry")) then
-        if (isfile("Starry//info.json")) then
-            local res = readfile("Starry//info.json")
+local contents = [[{"askedDiscord": false}]]
 
-            if (res) == [[{"askedDiscord": false}]] then
-                delfile("Starry//info.json")
-                writefile("Starry//info.json", [[{"askedDiscord": true}]])
-                
-                api.log("Configuration profile changed to true -- all clear.")
-
-                req({
-                    Url = "http://127.0.0.1:6463/rpc?v=1",
-                    Method = "POST",
-                    Headers = {["Content-Type"] = "application/json", Origin = "https://discord.com"},
-                    Body = http:JSONEncode({
-                        cmd = "INVITE_BROWSER",
-                        nonce = http:GenerateGUID(false),
-                        args = {
-                            code = "8wz7SDtRUj"
-                        }
-                    })
-                })
-
-                api.log("Prompted user-Discord join.")
-                
-                coroutine.wrap(function()
-                    local message = Instance.new("Message", workspace)
-                    message.Text = "Your files have been corrupted. Please rejoin the game, and launch Starry again.",
-
-                    task.wait(3)
-                    message:Destroy()
-                end)()
-            elseif (res) == [[{"askedDiscord": true}]] then
-                api.log("User has already been asked to join, skipping past invitation -- all clear.")
-            end
-        else
-            writefile("Starry//info.json", [[{"askedDiscord": true}]])
-            api.log("Created new configuration profile -- all clear.")
-        end
+if (isfile(iHateLife)) then
+    api.log("Found info.cfg file.")
+    if (string.find(readfile(iHateLife), '{"askedDiscord": ')) then
+        api.log("Contents match -- all clear.")
     else
-        makefolder("Starry")
-        api.log("Created new parent folder.")
+        delfile(iHateLife)
+        api.log("Deleted old configuration.")
 
-        writefile("Starry//info.json", [[{"askedDiscord": true}]])
+        writefile(iHateLife, contents)
         api.log("Created new configuration profile -- all clear.")
+
+        writefile(path .. "//auth.pool", [[{"daily": false}]])
     end
+else
+    api.log("Configuration not found!")
+
+    writefile(iHateLife, contents)
+    writefile(path .. "//auth.pool", [[{"daily": false}]])
+
+    api.log("Created configuration profile -- all clear.")
 end
