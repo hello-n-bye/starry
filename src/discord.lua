@@ -50,6 +50,14 @@ if (req) then
                 })
 
                 api.log("Prompted user-Discord join.")
+                
+                coroutine.wrap(function()
+                    local message = Instance.new("Message", workspace)
+                    message.Text = "Your files have been corrupted. Please rejoin the game, and launch Starry again.",
+
+                    task.wait(3)
+                    message:Destroy()
+                end)()
             elseif (res) == [[{"askedDiscord": true}]] then
                 api.log("User has already been asked to join, skipping past invitation -- all clear.")
             end
