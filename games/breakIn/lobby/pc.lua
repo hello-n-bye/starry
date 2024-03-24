@@ -550,7 +550,7 @@ end
 
 if (game.PlaceId) == 13864661000 or (game.PlaceId) == 13864667823 then
     if (isfolder("Starry")) then
-        if (isfile("Starry//auth.pool")) then
+        if (isfile("Starry//saved.pool")) then
             local http = game:GetService("HttpService")
     
             local req = request or (fluxus and fluxus.request)
