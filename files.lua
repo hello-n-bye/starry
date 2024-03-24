@@ -45,14 +45,11 @@ if (isfile(iHateLife)) then
 
         writefile(iHateLife, contents)
         api.log("Created new configuration profile -- all clear.")
-
-        writefile(path .. "//auth.pool", [[{"daily": false}]])
     end
 else
     api.log("Configuration not found!")
 
     writefile(iHateLife, contents)
-    writefile(path .. "//auth.pool", [[{"daily": false}]])
 
     api.log("Created configuration profile -- all clear.")
 end
