@@ -9,7 +9,14 @@ return (loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/hello-n-
 > This means Starry **only supports** the **lobby** of Break In 2.
 > Soon, you'll be able to experience the full experience of Break In 2.
 
-> **20 available features for the lobby.<br>80 unreleased features for the in-game section.**
+> **19 available features for the lobby.<br>~90 unreleased features for the in-game section.**
+
+---
+
+### Key System Support 🥲
+All you have to do to get the active key, is to [join our Discord server](https://discord.gg/Gu6NANJJWq), and copy the key in `#latest-key`.
+> The key provided **will work** until the bot posts a new key.
+<br><br>![image](https://github.com/hello-n-bye/starry/assets/159689944/1fcd770b-6aca-4d30-8446-679bbbaf7a7a)
 
 ---
 
