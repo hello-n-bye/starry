@@ -1,4 +1,4 @@
-local devices = loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/hello-n-bye/starry/master/src/device.lua", true))()
+local devices = loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/hello-n-bye/starry/dev/src/device.lua", true))()
 
 local placeid = game.PlaceId
 
