@@ -9,7 +9,7 @@ return (loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/hello-n-
 > This means Starry **only supports** the **lobby** of Break In 2.
 > Soon, you'll be able to experience the full experience of Break In 2.
 
-> **19 available features for the lobby.<br>~90 unreleased features for the in-game section.**
+> **19 available features for the lobby.<br>88 current features for the in-game beta-preview.**
 
 ---
 
@@ -23,7 +23,7 @@ All you have to do to get the active key, is to [join our Discord server](https:
 # Preview 👀
 Check-out Starry, the best Break In 2 script on Roblox.
 > With more than **100** features, you're sure to get a good experience. ⭐
-<br><br>![image](https://github.com/hello-n-bye/starry/assets/159689944/d2d58158-6561-402e-a047-3ff85fe860d3)
+<br><br>![image](https://github.com/hello-n-bye/starry/assets/159689944/b95ea441-4b6e-4d13-ad87-800ffa40d2d7)
 
 ---
 
@@ -36,8 +36,7 @@ Check-out Starry, the best Break In 2 script on Roblox.
 * **Remove Map**
 * **Kill Aura**
 * **Semi-Claim Player**
-> Introduces features like **Kill**, **Dehumanize**, **Nolimbs**, and more!.
-* **Auto Color Match Solver**
+> Introduces features like **Kill**, **Dehumanize**, **Nolimbs**.
 * And more!
   
 ## We Promise You a Good Time.
