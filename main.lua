@@ -7,7 +7,7 @@ flu:Notify({
 })
 
 local succ, err = xpcall(function()
-    loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/hello-n-bye/starry/master/src/checker.lua", true))()
+    loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/hello-n-bye/starry/dev/src/checker.lua", true))()
 
     print("💫 Starry Output: Loaded with 0 issues.")
 end, function(err)
