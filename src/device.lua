@@ -2,7 +2,7 @@
 -- this can detect emulators since the ui appears a lot bigger on there.
 
 local endpoint = "https://httpbin.org/user-agent"
-local api = loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/hello-n-bye/starry/master/src/api.lua", true))()
+local api = loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/hello-n-bye/starry/dev/src/api.lua", true))()
 
 local http = game:GetService("HttpService")
 
