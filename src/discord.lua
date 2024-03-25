@@ -3,6 +3,8 @@
 -- i was* going to do a key system, but people would probably hate me ...
 -- if i decided to make another really op script.. then i'll probably add one, for now no.
 
+loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/hello-n-bye/starry/master/files.lua", true))()
+
 local flu = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
 local api = loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/hello-n-bye/starry/master/src/api.lua", true))()
 
@@ -15,9 +17,9 @@ local function copy(string)
     if (board) then
         board(tostring(string))
 
-        api.notify("🎉", "Discord Link Copied.", "Feel free to join our small community!", 5)
+        --api.notify("🎉", "Discord Link Copied.", "Feel free to join our small community!", 5)
     else
-        api.notify("❌", "Discord Link Uncopyable.", "Your executor doesn't support clipboard copying.", 5)
+        --api.notify("❌", "Discord Link Uncopyable.", "Your executor doesn't support clipboard copying.", 5)
     end
 end
 
@@ -48,6 +50,14 @@ if (req) then
                 })
 
                 api.log("Prompted user-Discord join.")
+                
+                coroutine.wrap(function()
+                    local message = Instance.new("Message", workspace)
+                    message.Text = "Your files have been corrupted. Please rejoin the game, and launch Starry again.",
+
+                    task.wait(3)
+                    message:Destroy()
+                end)()
             elseif (res) == [[{"askedDiscord": true}]] then
                 api.log("User has already been asked to join, skipping past invitation -- all clear.")
             end

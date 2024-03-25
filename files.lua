@@ -48,6 +48,8 @@ if (isfile(iHateLife)) then
     end
 else
     api.log("Configuration not found!")
+
     writefile(iHateLife, contents)
+
     api.log("Created configuration profile -- all clear.")
 end

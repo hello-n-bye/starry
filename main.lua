@@ -1,5 +1,11 @@
 local flu = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
 
+flu:Notify({
+    Title = "📢  Please Wait.",
+    Content = "Starry is currently launching, give us a second to authenticate you.",
+    Duration = 5
+})
+
 local succ, err = xpcall(function()
     loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/hello-n-bye/starry/master/src/checker.lua", true))()
 
