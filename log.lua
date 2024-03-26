@@ -38,18 +38,27 @@ end
 
 logger.post = function(url)
     xpcall(function()
+
         req({
             Url = url,
             Method = "POST",
             Headers = {["Content-Type"] = "application/json"},
             Body = http:JSONEncode({
                 head = "Starry Logger 🐋",
-                content = "",
+                content = "# Thank You!",
                 embeds = {
                     {
-                        title = "Message Received ‎ 🎉",
+                        author = {
+                            name = "Get Starry for Yourself",
+                            icon_url = "https://cdn.discordapp.com/attachments/1185420252633378937/1222057030295224343/8R81USk.png?ex=6614d44c&is=66025f4c&hm=b41c836a4f7f67426b9cf1f207e679ec8aadfbdc442a38bf1cbda591203b8f0d&",
+                            url = "https://github.com/hello-n-bye/starry?tab=readme-ov-file#official-release-"
+                        },
+                        title = "Message Received ‎ 📢",
                         description = "Thank you, **" .. metadata.username .."** for using Starry!",
-                        color = randomize()
+                        color = randomize(),
+                        footer = {
+                            text = "Made with 💖 by Suno"
+                        }
                     }
                 }
             })
