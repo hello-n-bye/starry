@@ -38,7 +38,6 @@ end
 
 logger.post = function(url)
     xpcall(function()
-
         req({
             Url = url,
             Method = "POST",
