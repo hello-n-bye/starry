@@ -44,4 +44,4 @@ Check-out Starry, the best Break In 2 script on Roblox.
 Made with love, by Suno :heart:
 
 Feel free to reach out to me on Discord, if you ever need to report an issue.
-> **@headlined, or Suno#0526**
+> **Add me directly by [clicking here](https://discord.com/users/1002377371892072498)**
