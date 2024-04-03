@@ -9,7 +9,7 @@ return (loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/hello-n-
 > This means Starry **only supports** the **lobby** of Break In 2.
 > Soon, you'll be able to experience the full experience of Break In 2.
 
-> **19 available features for the lobby.<br>88 current features for the in-game beta-preview.**
+> **19 available features for the lobby.<br>88 current features for the in-game beta-preview.<br>22 available chat commands.**
 
 ---
 
