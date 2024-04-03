@@ -221,6 +221,7 @@ Converted["_Frame"].BorderSizePixel = 0
 Converted["_Frame"].Position = UDim2.new(0.5, 0, 0.5, 0)
 Converted["_Frame"].Size = UDim2.new(0, 450, 0, 325)
 Converted["_Frame"].Parent = Converted["_ScreenGui"]
+Converted["_Frame"].Visible = false
 
 Converted["_UICorner"].Parent = Converted["_Frame"]
 
