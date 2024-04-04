@@ -5,11 +5,14 @@ return (loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/hello-n-
 
 ---
 
-### Starry Supports Lobby! 💫
-> This means Starry **only supports** the **lobby** of Break In 2.
-> Soon, you'll be able to experience the full experience of Break In 2.
+### Starry's In BETA 💫
+This means Starry supports both the **lobby** and **in-game** now!
+* Please beware, bugs may occur and some features may not work as expected.
 
-> **19 available features for the lobby.<br>88 current features for the in-game beta-preview.<br>22 available chat commands.**
+> **19** available features for the lobby.**<br>84** current features for the in-game beta-preview.**<br>30** available chat commands.
+
+* Every in-game feature is 100% server sided.
+* Most lobby features are server sided, some being client only.
 
 ---
 
