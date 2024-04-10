@@ -1,6 +1,6 @@
 # Official Release 🐋
 ```lua
-return (loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/hello-n-bye/starry/master/main.lua", true))("Starry"))
+loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/hello-n-bye/starry/master/main.lua"))()
 ```
 
 ---
