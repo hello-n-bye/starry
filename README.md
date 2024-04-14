@@ -27,7 +27,7 @@ All you have to do to get the active key, is to [join our Discord server](https:
 
 # Preview 👀
 Check-out Starry, the best Break In 2 script on Roblox.
-> With more than **100** features, you're sure to get a good experience. ⭐
+> With more than **140** features, you're sure to get a good experience. ⭐
 <br><br>![image](https://github.com/hello-n-bye/starry/assets/159689944/b95ea441-4b6e-4d13-ad87-800ffa40d2d7)
 
 ---
