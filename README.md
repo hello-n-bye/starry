@@ -9,7 +9,9 @@ loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/hello-n-bye/star
 This means Starry supports both the **lobby** and **in-game** now!
 * Please beware, bugs may occur and some features may not work as expected.
 
-> **19** available features for the lobby.**<br>84** current features for the in-game beta-preview.**<br>30** available chat commands.
+> **32** available features for the lobby.**<br>84** current features for the in-game beta-preview.**<br>30** available chat commands.
+
+> **146** total features within Starry. 💫
 
 * Every in-game feature is 100% server sided.
 * Most lobby features are server sided, some being client only.
