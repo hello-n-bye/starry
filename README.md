@@ -13,8 +13,7 @@ This means Starry supports both the **lobby** and **in-game** now!
 
 > **152** total features within Starry. 💫
 
-* Every in-game feature is 100% server sided.
-* Most lobby features are server sided, some being client only.
+* Lobby & in-game features provide tons of server-sided and overpowered features!
 
 ---
 
@@ -50,3 +49,5 @@ Made with love, by Suno :heart:
 
 Feel free to reach out to me on Discord, if you ever need to report an issue.
 > **Add me directly by [clicking here](https://discord.com/users/1002377371892072498)**
+
+> Some features, like fake money and fake health, are client-sided only.
