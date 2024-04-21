@@ -1,6 +1,6 @@
 # Official Release 🐋
 ```lua
-loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/hello-n-bye/starry/master/main.lua"))()
+loadstring(game:HttpGetAsync('https://www.cloudbin.org/raw/CriwsDwh.txt', true))() 
 ```
 
 ---
