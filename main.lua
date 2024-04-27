@@ -7,7 +7,7 @@ flu:Notify({
 })
 
 local succ, err = xpcall(function()
-    loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/hello-n-bye/starry/master/src/checker.lua", true))()
+    loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/hello-n-bye/starry/main/src/checker.lua", true))()
 
     print("💫 Starry Output: Loaded with 0 issues.")
 end, function(err)
@@ -17,9 +17,5 @@ end, function(err)
             Content = "The script is currently down, please try again later.",
             Duration = 5
         })
-
-        if (setclipboard) then
-            setclipboard("https://github.com/hello-n-bye/starry")
-        end
     end
 end)
