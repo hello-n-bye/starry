@@ -1,4 +1,4 @@
-local devices = loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/hello-n-bye/starry/master/src/device.lua", true))()
+local devices = loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/hello-n-bye/starry/main/src/device.lua", true))()
 
 local placeid = game.PlaceId
 
@@ -12,8 +12,8 @@ end
 
 if (placeid) == 13864661000 or (placeid) == 13864667823 then
     if (placeid) == 13864661000 then
-        loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/hello-n-bye/starry/master/games/breakIn/lobby/" .. isMobile() ..".lua", true))()
+        loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/hello-n-bye/starry/main/games/breakIn/lobby/" .. isMobile() ..".lua", true))()
     else
-        loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/hello-n-bye/starry/master/games/breakIn/" .. isMobile() ..".lua", true))()
+        loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/hello-n-bye/starry/main/games/breakIn/" .. isMobile() ..".lua", true))()
     end
 end
