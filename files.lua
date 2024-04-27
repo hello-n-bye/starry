@@ -8,7 +8,7 @@
 
 local cryMyselfToSleep = false
 
-local api = loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/hello-n-bye/starry/master/src/api.lua", true))()
+local api = loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/hello-n-bye/starry/main/src/api.lua", true))()
 
 local path = "Starry"
 
