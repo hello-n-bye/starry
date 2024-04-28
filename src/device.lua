@@ -37,7 +37,7 @@ local function platform(agent)
     elseif (string.find(agent, "Windows")) or (string.find(agent, "Krampus")) or (string.find(identifyexecutor(), "Wave")) then
         return "Windows"
     else
-        api.log(agent)
+        return "Android" -- failsafe for unknown device
     end
 end
 
