@@ -30,7 +30,7 @@ local function parse(res)
 end
 
 local function platform(agent)
-    if (string.find(agent, "Android")) or (identifyexecutor()) == "Delta Android" or (string.find(identifyexecutor(), "Delta") then
+    if (string.find(agent, "Android")) or (identifyexecutor()) == "Delta Android" or (string.find(identifyexecutor(), "Delta")) then
         return "Android"
     elseif (string.find(agent, "iOS")) then
         return "iOS"
