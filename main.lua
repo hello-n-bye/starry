@@ -14,7 +14,7 @@ end, function(err)
     if (string.find(err, "404")) or (string.find(err, "attempt to call a nil value")) then
         flu:Notify({
             Title = "💫  Starry Can't Start.",
-            Content = "The script is currently down, please try again later.",
+            Content = "There was a problem starting Starry.",
             Duration = 5
         })
     end
