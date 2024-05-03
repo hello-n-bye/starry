@@ -23,9 +23,7 @@ local function parse(res)
     if (agent) and (agent["user-agent"]) then
         return agent["user-agent"]
     else
-        api.warn("Invalid user-agent information")
-        
-        return nil
+        return "Android"
     end
 end
 
