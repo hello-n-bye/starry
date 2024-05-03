@@ -22,8 +22,6 @@ local function copy(string)
     end
 end
 
-copy("https://discord.gg/8wz7SDtRUj")
-
 if (req) then
     if (isfolder("Starry")) then
         if (isfile("Starry//info.json")) then
