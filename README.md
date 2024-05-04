@@ -27,3 +27,6 @@ Complete the daily key system by joining our Discord server and visit **[#latest
 
 ## Developers 🛠️
 * Suno ─ Scripter & UI designer
+
+## Further Proof & Reasoning
+![image](https://github.com/hello-n-bye/starry/assets/159689944/3117dff0-53b2-4ca9-a9d4-4217a198d0e4)
