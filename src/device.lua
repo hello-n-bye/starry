@@ -28,14 +28,18 @@ local function parse(res)
 end
 
 local function platform(agent)
-    if (string.find(agent, "Android")) or (identifyexecutor()) == "Delta Android" or (string.find(identifyexecutor(), "Delta")) then
+    if (string.find(agent, "Android")) then
         return "Android"
     elseif (string.find(agent, "iOS")) then
         return "iOS"
-    elseif (string.find(agent, "Krampus")) or (string.find(identifyexecutor(), "Wave")) or (string.find(identifyexecutor(), "Solara")) then
+    elseif (string.find(agent, "Krampus")) then
         return "Windows"
     else
-        return "Android" -- failsafe for unknown device
+        if (string.find(identifyexecutor(), "Wave")) or (string.find(identifyexecutor(), "Solara")) then
+            return "Windows"
+        else
+            return "Android"
+        end
     end
 end
 
