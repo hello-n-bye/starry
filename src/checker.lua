@@ -17,10 +17,12 @@ if (placeid) == 13864661000 or (placeid) == 13864667823 then
     else
         loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/hello-n-bye/starry/main/games/breakIn/" .. isMobile() ..".lua", true))()
     end
+elseif (placeid) == 3582763398 or (placeid) == 1962086868 then
+    loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/hello-n-bye/starry/main/games/ToH/" .. isMobile() ..".lua", true))()
 else
     flu:Notify({
-        Title = "❌  Join Break In 2.",
-        Content = "Please join Break In 2 to use this script.",
-        Duration = 3
+        Title = "❌  Join a Supported Game.",
+        Content = "Please join either Break In 2 or Tower of Hell.",
+        Duration = 5
     })
 end
