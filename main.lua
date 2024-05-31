@@ -12,12 +12,16 @@ local succ, err = xpcall(function()
     print("💫 Starry Output: Loaded with 0 issues.")
 end, function(err)
     if (string.find(err, "404")) or (string.find(err, "attempt to call a nil value")) then
-        flu:Notify({
-            Title = "💫  Starry Can't Start.",
-            Content = "There was a problem starting Starry.",
-            Duration = 5
-        })
-
-        print("💫 Starry Output: " .. err)
+        if (string.find(identifyexecutor(), "incognito")) then -- Hoping this will solve our problems..?
+            task.wait(1) do
+                loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/hello-n-bye/starry/main/src/checker.lua", true))()
+            end
+        else
+            flu:Notify({
+                Title = "💫  Starry Can't Start.",
+                Content = "The script is currently down, please try again later.",
+                Duration = 5
+            })
+        end
     end
 end)
