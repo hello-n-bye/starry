@@ -7,7 +7,7 @@ local function isMobile()
     if (devices) == "Windows" or (string.find(devices, "Krampus")) then
         return "pc"
     else
-        if (string.find(identifyexecutor(), "Solara")) or (string.find(identifyexecutor(), "Wave")) then
+        if (string.find(identifyexecutor(), "Solara")) or (string.find(identifyexecutor(), "Wave")) or (string.find(identifyexecutor(), "incognito")) then
             return "pc"
         else
             return "mobile"
