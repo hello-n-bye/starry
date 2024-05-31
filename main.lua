@@ -17,5 +17,7 @@ end, function(err)
             Content = "There was a problem starting Starry.",
             Duration = 5
         })
+
+        print("💫 Starry Output: " .. err)
     end
 end)
