@@ -1,6 +1,6 @@
 # Official Release 🐋
 ```lua
-loadstring(game:HttpGet("https://github.com/hello-n-bye/starry/blob/main/main.lua/?raw=true", true))()
+loadstring(game:HttpGet("https://www.cloudbin.org/starry", true))()
 ```
 
 ---
