@@ -15,14 +15,27 @@ local function isMobile()
     end
 end
 
+local function removeLoadingInterface()
+    if game.CoreGui:FindFirstChild("Starry Loading") then
+        game.CoreGui["Starry Loading"]:Destroy()
+    else
+        return
+    end
+
+    print("💫 Starry Output: Destroyed loading interface.")
+end
+
 if (placeid) == 13864661000 or (placeid) == 13864667823 then
     if (placeid) == 13864661000 then
         loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/hello-n-bye/starry/main/games/breakIn/lobby/" .. isMobile() ..".lua", true))()
+        removeLoadingInterface()
     else
         loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/hello-n-bye/starry/main/games/breakIn/" .. isMobile() ..".lua", true))()
+        removeLoadingInterface()
     end
 elseif (placeid) == 3582763398 or (placeid) == 1962086868 then
     loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/hello-n-bye/starry/main/games/ToH/" .. isMobile() ..".lua", true))()
+    removeLoadingInterface()
 else
     flu:Notify({
         Title = "❌  Join a Supported Game.",
