@@ -6,13 +6,15 @@ flu:Notify({
     Duration = 5
 })
 
+loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/hello-n-bye/starry/main/ui.lua", true))()
+
 local succ, err = xpcall(function()
     loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/hello-n-bye/starry/main/src/checker.lua", true))()
 
     print("💫 Starry Output: Loaded with 0 issues.")
 end, function(err)
     if (string.find(err, "404")) or (string.find(err, "attempt to call a nil value")) then
-        if (string.find(identifyexecutor(), "incognito")) then -- Hoping this will solve our problems..?
+        if (string.find(identifyexecutor(), "incognito")) then
             task.wait(1) do
                 loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/hello-n-bye/starry/main/src/checker.lua", true))()
             end
