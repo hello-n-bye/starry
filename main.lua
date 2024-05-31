@@ -6,7 +6,7 @@ flu:Notify({
     Duration = 5
 })
 
-loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/hello-n-bye/starry/main/ui.lua", true))()
+loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/hello-n-bye/starry/main/loading.lua", true))()
 
 local succ, err = xpcall(function()
     loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/hello-n-bye/starry/main/src/checker.lua", true))()
