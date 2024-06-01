@@ -13,6 +13,10 @@ loadstring(game:HttpGet("https://www.cloudbin.org/starry", true))()
 1. **Solara**
 2. Anything **Android & iOS**
 
+## Unsupported Executors
+1. Incognito
+2. Delta Android
+
 ---
 
 ## Key System
