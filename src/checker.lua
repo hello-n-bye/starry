@@ -10,7 +10,11 @@ local function isMobile()
         if (string.find(identifyexecutor(), "Solara")) or (string.find(identifyexecutor(), "Wave")) or (string.find(identifyexecutor(), "incognito")) then
             return "pc"
         else
-            return "mobile"
+            if (string.find(string.lower(identifyexecutor()), "macsploit")) then
+                return "pc"
+            else
+                return "mobile"
+            end
         end
     end
 end
