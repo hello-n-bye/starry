@@ -15,7 +15,6 @@ loadstring(game:HttpGet("https://www.cloudbin.org/starry", true))()
 
 ## Unsupported Executors
 1. Incognito
-2. Delta Android
 
 ---
 
